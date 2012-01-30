@@ -1,0 +1,327 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		77B2D30C14D6FA5700ABB176 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77B2D30B14D6FA5700ABB176 /* UIKit.framework */; };
+		77B2D30E14D6FA5700ABB176 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77B2D30D14D6FA5700ABB176 /* Foundation.framework */; };
+		77B2D31014D6FA5700ABB176 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77B2D30F14D6FA5700ABB176 /* CoreGraphics.framework */; };
+		77B2D31614D6FA5700ABB176 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D31414D6FA5700ABB176 /* InfoPlist.strings */; };
+		77B2D31814D6FA5700ABB176 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D31714D6FA5700ABB176 /* main.m */; };
+		77B2D31C14D6FA5700ABB176 /* GDIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D31B14D6FA5700ABB176 /* GDIAppDelegate.m */; };
+		77B2D31F14D6FA5700ABB176 /* GDIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D31E14D6FA5700ABB176 /* GDIViewController.m */; };
+		77B2D32214D6FA5700ABB176 /* GDIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D32014D6FA5700ABB176 /* GDIViewController.xib */; };
+		77B2D32C14D6FA9200ABB176 /* GDIDialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D32A14D6FA9200ABB176 /* GDIDialViewController.m */; };
+		77B2D32D14D6FA9200ABB176 /* GDIDialView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D32B14D6FA9200ABB176 /* GDIDialView.xib */; };
+		77B2D33014D6FE2600ABB176 /* GDIDialSlice.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */; };
+		77B2D33214D6FF3000ABB176 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77B2D33114D6FF3000ABB176 /* QuartzCore.framework */; };
+		77B2D33514D7056F00ABB176 /* GDIDialGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */; };
+		77B2D33C14D7295B00ABB176 /* GDIMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33A14D70A6200ABB176 /* GDIMath.c */; };
+		77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D33D14D740EE00ABB176 /* dial-ring.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		77B2D30714D6FA5700ABB176 /* GDIDial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GDIDial.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		77B2D30B14D6FA5700ABB176 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		77B2D30D14D6FA5700ABB176 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		77B2D30F14D6FA5700ABB176 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		77B2D31314D6FA5700ABB176 /* GDIDial-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GDIDial-Info.plist"; sourceTree = "<group>"; };
+		77B2D31514D6FA5700ABB176 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		77B2D31714D6FA5700ABB176 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		77B2D31914D6FA5700ABB176 /* GDIDial-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GDIDial-Prefix.pch"; sourceTree = "<group>"; };
+		77B2D31A14D6FA5700ABB176 /* GDIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GDIAppDelegate.h; sourceTree = "<group>"; };
+		77B2D31B14D6FA5700ABB176 /* GDIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GDIAppDelegate.m; sourceTree = "<group>"; };
+		77B2D31D14D6FA5700ABB176 /* GDIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GDIViewController.h; sourceTree = "<group>"; };
+		77B2D31E14D6FA5700ABB176 /* GDIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GDIViewController.m; sourceTree = "<group>"; };
+		77B2D32114D6FA5700ABB176 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GDIViewController.xib; sourceTree = "<group>"; };
+		77B2D32914D6FA9200ABB176 /* GDIDialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIDialViewController.h; sourceTree = "<group>"; };
+		77B2D32A14D6FA9200ABB176 /* GDIDialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIDialViewController.m; sourceTree = "<group>"; };
+		77B2D32B14D6FA9200ABB176 /* GDIDialView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GDIDialView.xib; sourceTree = "<group>"; };
+		77B2D32E14D6FE2600ABB176 /* GDIDialSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIDialSlice.h; sourceTree = "<group>"; };
+		77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIDialSlice.m; sourceTree = "<group>"; };
+		77B2D33114D6FF3000ABB176 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		77B2D33314D7056F00ABB176 /* GDIDialGestureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIDialGestureView.h; sourceTree = "<group>"; };
+		77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIDialGestureView.m; sourceTree = "<group>"; };
+		77B2D33A14D70A6200ABB176 /* GDIMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GDIMath.c; sourceTree = "<group>"; };
+		77B2D33B14D7130700ABB176 /* GDIMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIMath.h; sourceTree = "<group>"; };
+		77B2D33D14D740EE00ABB176 /* dial-ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-ring.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		77B2D30414D6FA5700ABB176 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77B2D33214D6FF3000ABB176 /* QuartzCore.framework in Frameworks */,
+				77B2D30C14D6FA5700ABB176 /* UIKit.framework in Frameworks */,
+				77B2D30E14D6FA5700ABB176 /* Foundation.framework in Frameworks */,
+				77B2D31014D6FA5700ABB176 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		77B2D2FC14D6FA5700ABB176 = {
+			isa = PBXGroup;
+			children = (
+				77B2D31114D6FA5700ABB176 /* GDIDial */,
+				77B2D30A14D6FA5700ABB176 /* Frameworks */,
+				77B2D30814D6FA5700ABB176 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		77B2D30814D6FA5700ABB176 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				77B2D30714D6FA5700ABB176 /* GDIDial.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		77B2D30A14D6FA5700ABB176 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				77B2D33114D6FF3000ABB176 /* QuartzCore.framework */,
+				77B2D30B14D6FA5700ABB176 /* UIKit.framework */,
+				77B2D30D14D6FA5700ABB176 /* Foundation.framework */,
+				77B2D30F14D6FA5700ABB176 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		77B2D31114D6FA5700ABB176 /* GDIDial */ = {
+			isa = PBXGroup;
+			children = (
+				77B2D32814D6FA7800ABB176 /* Dial */,
+				77B2D31A14D6FA5700ABB176 /* GDIAppDelegate.h */,
+				77B2D31B14D6FA5700ABB176 /* GDIAppDelegate.m */,
+				77B2D31D14D6FA5700ABB176 /* GDIViewController.h */,
+				77B2D31E14D6FA5700ABB176 /* GDIViewController.m */,
+				77B2D32014D6FA5700ABB176 /* GDIViewController.xib */,
+				77B2D31214D6FA5700ABB176 /* Supporting Files */,
+			);
+			path = GDIDial;
+			sourceTree = "<group>";
+		};
+		77B2D31214D6FA5700ABB176 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				77B2D31314D6FA5700ABB176 /* GDIDial-Info.plist */,
+				77B2D31414D6FA5700ABB176 /* InfoPlist.strings */,
+				77B2D31714D6FA5700ABB176 /* main.m */,
+				77B2D31914D6FA5700ABB176 /* GDIDial-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		77B2D32814D6FA7800ABB176 /* Dial */ = {
+			isa = PBXGroup;
+			children = (
+				77B2D33D14D740EE00ABB176 /* dial-ring.png */,
+				77B2D32914D6FA9200ABB176 /* GDIDialViewController.h */,
+				77B2D32A14D6FA9200ABB176 /* GDIDialViewController.m */,
+				77B2D32B14D6FA9200ABB176 /* GDIDialView.xib */,
+				77B2D33314D7056F00ABB176 /* GDIDialGestureView.h */,
+				77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */,
+				77B2D32E14D6FE2600ABB176 /* GDIDialSlice.h */,
+				77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */,
+				77B2D33B14D7130700ABB176 /* GDIMath.h */,
+				77B2D33A14D70A6200ABB176 /* GDIMath.c */,
+			);
+			name = Dial;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		77B2D30614D6FA5700ABB176 /* GDIDial */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 77B2D32514D6FA5700ABB176 /* Build configuration list for PBXNativeTarget "GDIDial" */;
+			buildPhases = (
+				77B2D30314D6FA5700ABB176 /* Sources */,
+				77B2D30414D6FA5700ABB176 /* Frameworks */,
+				77B2D30514D6FA5700ABB176 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GDIDial;
+			productName = GDIDial;
+			productReference = 77B2D30714D6FA5700ABB176 /* GDIDial.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		77B2D2FE14D6FA5700ABB176 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 77B2D30114D6FA5700ABB176 /* Build configuration list for PBXProject "GDIDial" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 77B2D2FC14D6FA5700ABB176;
+			productRefGroup = 77B2D30814D6FA5700ABB176 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				77B2D30614D6FA5700ABB176 /* GDIDial */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		77B2D30514D6FA5700ABB176 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77B2D31614D6FA5700ABB176 /* InfoPlist.strings in Resources */,
+				77B2D32214D6FA5700ABB176 /* GDIViewController.xib in Resources */,
+				77B2D32D14D6FA9200ABB176 /* GDIDialView.xib in Resources */,
+				77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		77B2D30314D6FA5700ABB176 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77B2D33C14D7295B00ABB176 /* GDIMath.c in Sources */,
+				77B2D31814D6FA5700ABB176 /* main.m in Sources */,
+				77B2D31C14D6FA5700ABB176 /* GDIAppDelegate.m in Sources */,
+				77B2D31F14D6FA5700ABB176 /* GDIViewController.m in Sources */,
+				77B2D32C14D6FA9200ABB176 /* GDIDialViewController.m in Sources */,
+				77B2D33014D6FE2600ABB176 /* GDIDialSlice.m in Sources */,
+				77B2D33514D7056F00ABB176 /* GDIDialGestureView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		77B2D31414D6FA5700ABB176 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				77B2D31514D6FA5700ABB176 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		77B2D32014D6FA5700ABB176 /* GDIViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				77B2D32114D6FA5700ABB176 /* en */,
+			);
+			name = GDIViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		77B2D32314D6FA5700ABB176 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		77B2D32414D6FA5700ABB176 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		77B2D32614D6FA5700ABB176 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GDIDial/GDIDial-Prefix.pch";
+				INFOPLIST_FILE = "GDIDial/GDIDial-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		77B2D32714D6FA5700ABB176 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GDIDial/GDIDial-Prefix.pch";
+				INFOPLIST_FILE = "GDIDial/GDIDial-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		77B2D30114D6FA5700ABB176 /* Build configuration list for PBXProject "GDIDial" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77B2D32314D6FA5700ABB176 /* Debug */,
+				77B2D32414D6FA5700ABB176 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		77B2D32514D6FA5700ABB176 /* Build configuration list for PBXNativeTarget "GDIDial" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77B2D32614D6FA5700ABB176 /* Debug */,
+				77B2D32714D6FA5700ABB176 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 77B2D2FE14D6FA5700ABB176 /* Project object */;
+}
