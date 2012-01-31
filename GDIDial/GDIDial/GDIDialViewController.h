@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GDIDialGestureView.h"
+#import "GDIDialSlice.h"
 
 typedef enum {
     GDIDialPositionTop = 0,
@@ -16,17 +17,36 @@ typedef enum {
     GDIDialPositionBottom,
 } GDIDialPosition;
 
-#define kFriction .9f
+#define kFriction .8f
+
+@protocol GDIDialViewControllerDataSource, GDIDialViewControllerDelegate;
 
 @interface GDIDialViewController : UIViewController <GDIDialGestureViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *rotatingDialView;
-@property(strong,nonatomic,readonly) GDIDialGestureView *gestureView;
+@property(strong, nonatomic, readonly) GDIDialGestureView *gestureView;
 @property(nonatomic) GDIDialPosition dialPosition;
-@property(strong, nonatomic) NSNumber *dialRadius;
-@property(strong, nonatomic,readonly) NSArray *items;
+@property(nonatomic) CGFloat dialRadius;
+@property(strong, nonatomic) NSObject<GDIDialViewControllerDataSource> *dataSource;
+@property(strong, nonatomic) NSObject<GDIDialViewControllerDelegate> *delegate;
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil items:(NSArray *)items;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource;
 
+- (void)rotateDialToIndex:(NSUInteger)index;
+
+- (NSArray *)visibleSlices;
+
+@end
+
+
+@protocol GDIDialViewControllerDataSource
+@required
+- (NSUInteger)numberOfSlicesForDial;
+- (GDIDialSlice *)viewForDialSliceAtIndex:(NSUInteger)index;
+
+@end
+
+@protocol GDIDialViewControllerDelegate
+- (void)dialViewController:(GDIDialViewController *)dialVC didSelectIndex:(NSUInteger)selectedIndex;
 @end

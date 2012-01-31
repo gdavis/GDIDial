@@ -7,9 +7,11 @@
 //
 
 #import "GDIViewController.h"
-#import "GDIDialViewController.h"
+
+#define kDialRadius 160.f
 
 @implementation GDIViewController
+@synthesize dataItems = _dataItems;
 
 - (void)didReceiveMemoryWarning
 {
@@ -22,9 +24,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    NSArray *items = [NSArray arrayWithObjects:@"One", @"Two", @"Three", nil];
-    GDIDialViewController *dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil items:items];
+    
+    _dataItems = [NSArray arrayWithObjects:@"One", @"Two", @"Three",@"Four", nil];
+    GDIDialViewController *dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil dataSource:self];
+    dialViewController.dialRadius = kDialRadius;
+    dialViewController.dialPosition = GDIDialPositionBottom;
     [self.view addSubview:dialViewController.view];
 }
 
@@ -60,5 +64,43 @@
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
+
+
+#pragma mark - GDIDialViewControllerDataSource Methods
+
+- (NSUInteger)numberOfSlicesForDial
+{
+    return 100; //[_dataItems count];
+}
+
+- (GDIDialSlice *)viewForDialSliceAtIndex:(NSUInteger)index
+{
+    CGFloat width = 100.f;
+    
+    GDIDialSlice *slice = [[GDIDialSlice alloc] initWithRadius:kDialRadius width:width];
+    
+    UIView *debugView = [[UIView alloc] initWithFrame:CGRectMake(-width*.5, 0, width, kDialRadius)];
+    debugView.backgroundColor = [self randomColor];
+    [slice addSubview:debugView];
+    
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-width*.5, 0, width, kDialRadius)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = UITextAlignmentCenter;
+    label.text = [NSString stringWithFormat:@"%i", index];
+    [slice addSubview:label];
+    
+    return slice;
+}
+
+
+- (UIColor *)randomColor {
+    CGFloat red =  (CGFloat)random()/(CGFloat)RAND_MAX;
+    CGFloat blue = (CGFloat)random()/(CGFloat)RAND_MAX;
+    CGFloat green = (CGFloat)random()/(CGFloat)RAND_MAX;
+    return [UIColor colorWithRed:red green:green blue:blue alpha:.5];
+}
+
+
 
 @end

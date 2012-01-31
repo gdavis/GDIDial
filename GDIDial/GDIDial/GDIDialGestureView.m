@@ -23,12 +23,11 @@ CGPoint cartesianCoordinateFromPolar(float radius, float radians);
 @synthesize dialRadius = _dialRadius;
 
 
-- (id)initWithFrame:(CGRect)frame dialRadius:(NSNumber *)radius
+- (id)initWithFrame:(CGRect)frame dialRadius:(CGFloat)radius
 {
     self = [super initWithFrame:frame];
     if (self) {
         _dialRadius = radius;
-//        [self buildDialArea];
     }
     return self;
 }
@@ -41,7 +40,7 @@ CGPoint cartesianCoordinateFromPolar(float radius, float radians);
     [self.layer addSublayer:dialOutline];
     
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddEllipseInRect(path, nil, CGRectMake(0, 0, [_dialRadius floatValue] * 2, [_dialRadius floatValue] * 2));
+    CGPathAddEllipseInRect(path, nil, CGRectMake(0, 0, _dialRadius* 2, _dialRadius * 2));
     dialOutline.path = path;
     
     dialOutline.strokeColor = [[UIColor grayColor] CGColor];
@@ -57,12 +56,12 @@ CGPoint cartesianCoordinateFromPolar(float radius, float radians);
     for (int i=0; i<dl; i++) {
         
         CGFloat rads = degreesToRadians(currentAngle);
-        CGPoint point = cartesianCoordinateFromPolar([_dialRadius floatValue], rads);
+        CGPoint point = cartesianCoordinateFromPolar(_dialRadius, rads);
         
         NSLog(@"point: %@", NSStringFromCGPoint(point));
         
         CAShapeLayer *dot = [CAShapeLayer layer];
-        dot.frame = CGRectMake(point.x + [_dialRadius floatValue] , point.y + [_dialRadius floatValue], 5, 5);
+        dot.frame = CGRectMake(point.x + _dialRadius, point.y + _dialRadius, 5, 5);
         CGMutablePathRef dotPath = CGPathCreateMutable();
         CGPathAddEllipseInRect(dotPath, NULL, CGRectMake(-dot.frame.size.width * .5 , -dot.frame.size.height * .5, dot.frame.size.width, dot.frame.size.height));
         dot.fillColor = [[UIColor blueColor] CGColor];
@@ -75,9 +74,9 @@ CGPoint cartesianCoordinateFromPolar(float radius, float radians);
     
     // create big dot for circle origin
     CGSize originDotSize = CGSizeMake(10, 10);
-    CGPoint origin = cartesianCoordinateFromPolar([_dialRadius floatValue], 0);
+    CGPoint origin = cartesianCoordinateFromPolar(_dialRadius, 0);
     CAShapeLayer *originDot = [CAShapeLayer layer];
-    originDot.frame = CGRectMake(origin.x + [_dialRadius floatValue] , origin.y + [_dialRadius floatValue], originDotSize.width, originDotSize.height);
+    originDot.frame = CGRectMake(origin.x + _dialRadius, origin.y + _dialRadius, originDotSize.width, originDotSize.height);
     CGMutablePathRef dotPath = CGPathCreateMutable();
     CGPathAddEllipseInRect(dotPath, NULL, CGRectMake(-originDotSize.width * .5 , -originDotSize.height * .5, originDotSize.width, originDotSize.height));
     originDot.fillColor = [[UIColor yellowColor] CGColor];
@@ -123,7 +122,10 @@ CGPoint cartesianCoordinateFromPolar(float radius, float radians)
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"touchesCancelled");
+    if ([_delegate respondsToSelector:@selector(gestureView:touchEndedAtPoint:)] && [touches count] == 1) {
+        UITouch *touch = [touches anyObject];
+        [_delegate gestureView:self touchEndedAtPoint:[touch locationInView:self]];
+    }
 }
 
 

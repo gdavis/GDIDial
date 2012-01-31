@@ -9,23 +9,24 @@
 #import "GDIDialSlice.h"
 
 @implementation GDIDialSlice
+@synthesize radius = _radius;
+@synthesize width = _width;
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithRadius:(CGFloat)r width:(CGFloat)width
 {
-    self = [super initWithFrame:frame];
+    self = [self initWithFrame:CGRectZero];
     if (self) {
-        // Initialization code
+        _radius = r;
+        _width = width;
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+
+- (CGFloat)sizeInRadians
 {
-    // Drawing code
+    return _width / _radius;
 }
-*/
+
 
 @end

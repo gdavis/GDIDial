@@ -14,13 +14,20 @@
 @interface GDIDialViewController()
 
 @property(strong,nonatomic) UIView *rotatingDialContainerView;
+@property(strong,nonatomic) UIView *rotatingSlicesContainerView;
+@property(nonatomic) CGFloat currentRotation;
 @property(nonatomic) CGFloat velocity;
 @property(nonatomic) CGPoint lastPoint;
 @property(strong,nonatomic) NSTimer *decelerationTimer;
+@property(strong,nonatomic) NSMutableArray *visibleSlices;
 
-- (void)buildDial;
+- (void)buildVisibleSlices;
+
 - (void)beginDeceleration;
 - (void)endDeceleration;
+
+- (void)rotateToNearestSlice;
+- (void)rotateDialByRadians:(CGFloat)radians;
 
 - (CGPoint)normalizedPoint:(CGPoint)point inView:(UIView *)view;
 - (void)trackTouchPoint:(CGPoint)point inView:(UIView*)view;
@@ -32,24 +39,28 @@
 
 @synthesize dialPosition = _dialPosition;
 @synthesize dialRadius = _dialRadius;
-@synthesize items = _items;
 @synthesize rotatingDialView = _rotatingDialView;
+@synthesize dataSource = _dataSource;
+@synthesize delegate = _delegate;
 
+@synthesize rotatingSlicesContainerView = _rotatingSlicesContainerView;
 @synthesize rotatingDialContainerView = _rotatingDialContainerView;
 @synthesize gestureView = _gestureView;
+@synthesize currentRotation = _currentRotation;
 @synthesize velocity = _velocity;
 @synthesize lastPoint = _lastPoint;
 @synthesize decelerationTimer = _decelerationTimer;
+@synthesize visibleSlices = _visibleSlices;
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil items:(NSArray *)items
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource
 {
     self = [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         
-        _items = items;
+        _dataSource = dataSource;
         _dialPosition = GDIDialPositionBottom;
-        _dialRadius = [NSNumber numberWithInt:160];
+        _dialRadius = 160.f;
     }
     return self;
 }
@@ -78,12 +89,22 @@
     self.rotatingDialView.frame = CGRectMake(-self.rotatingDialView.frame.size.width*.5, -self.rotatingDialView.frame.size.height*.5, self.rotatingDialView.frame.size.width, self.rotatingDialView.frame.size.height);
     [_rotatingDialContainerView addSubview:self.rotatingDialView];
     
+    
+    
+    // add container for the slices
+    _rotatingSlicesContainerView = [[UIView alloc] initWithFrame:CGRectMake(self.view.center.x, self.view.center.y, 0, 0)];
+    [self.view addSubview:_rotatingSlicesContainerView];
+    
+    
     // create a custom gesture view which tells us when there are touches on the dial
     CGRect gestureViewFrame = CGRectMake(self.view.bounds.size.width * .5 - self.rotatingDialView.frame.size.width * .5, self.view.bounds.size.height * .5 - self.rotatingDialView.frame.size.height * .5, self.rotatingDialView.frame.size.width, self.rotatingDialView.frame.size.height);
     
     _gestureView = [[GDIDialGestureView alloc] initWithFrame:gestureViewFrame dialRadius:_dialRadius];
     _gestureView.delegate = self;
     [self.view addSubview:_gestureView];
+    
+    [self buildVisibleSlices];
+    
 }
 
 
@@ -102,7 +123,73 @@
 }
 
 
+#pragma mark - Class Methods
+
+- (void)rotateDialToIndex:(NSUInteger)index
+{
+    
+}
+
+
+- (NSArray *)visibleSlices
+{
+    return [NSArray arrayWithArray:_visibleSlices];
+}
+
+
 #pragma mark - Private Methods
+
+
+- (void)buildVisibleSlices
+{
+    _visibleSlices = [NSMutableArray array];
+    
+    NSUInteger dl = [_dataSource numberOfSlicesForDial];
+    
+    CGFloat maxRadians = degreesToRadians(180);
+    
+    CGFloat offsetRadians = 0;
+    if (_dialPosition == GDIDialPositionBottom) {
+        offsetRadians = degreesToRadians(90);
+    }
+    else if (_dialPosition == GDIDialPositionLeft) {
+        offsetRadians = degreesToRadians(180);
+    }
+    else if (_dialPosition == GDIDialPositionTop) {
+        offsetRadians = degreesToRadians(270);
+    }
+    
+    CGFloat totalRadians = 0.f;
+    
+    for (int i=0; i<dl; i++) {
+        
+        GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:i];
+        
+        slice.transform = CGAffineTransformMakeRotation( totalRadians + offsetRadians );
+        
+        [_rotatingSlicesContainerView addSubview:slice];
+        [_visibleSlices addObject:slice];
+        
+        totalRadians -= [slice sizeInRadians];
+        
+        if (totalRadians <= -maxRadians) {
+            break;
+        }
+    }
+}
+
+- (void)rotateToNearestSlice
+{
+    
+}
+
+- (void)rotateDialByRadians:(CGFloat)radians
+{
+    _currentRotation += radians;
+    _rotatingSlicesContainerView.transform = CGAffineTransformRotate(_rotatingDialContainerView.transform, radians);    
+    _rotatingDialContainerView.transform = CGAffineTransformRotate(_rotatingDialContainerView.transform, radians);    
+}
+
 
 
 // this method takes touch interaction points and rotates the dial container to match the movement
@@ -114,11 +201,12 @@
     CGFloat angleBetweenCurrerntTouchAndCenter = atan2f(normalizedPoint.y, normalizedPoint.x);
     CGFloat rotationAngle = angleBetweenCurrerntTouchAndCenter - angleBetweenInitalTouchAndCenter;
     
-    _rotatingDialContainerView.transform = CGAffineTransformRotate(_rotatingDialContainerView.transform, rotationAngle);
+    [self rotateDialByRadians:rotationAngle];
     
     _velocity = rotationAngle;
     _lastPoint = normalizedPoint;
 }
+
 
 
 // the point we are provided is based from the top-left corner of the view instead of from the center.
@@ -134,8 +222,7 @@
 {
     NSLog(@"begin deceleration with velocity: %.2f", _velocity);
     [_decelerationTimer invalidate];
-    
-    self.decelerationTimer = [NSTimer scheduledTimerWithTimeInterval:.03f target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
+    _decelerationTimer = [NSTimer scheduledTimerWithTimeInterval:.03f target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
 }
 
 
@@ -158,7 +245,7 @@
         [self endDeceleration];
     }
     else {
-        _rotatingDialContainerView.transform = CGAffineTransformRotate(_rotatingDialContainerView.transform, _velocity);
+        [self rotateDialByRadians:_velocity];
     }
 }
 

@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GDIDialViewController.h"
 
-@interface GDIViewController : UIViewController
+@interface GDIViewController : UIViewController <GDIDialViewControllerDataSource>
+
+@property(strong,nonatomic) NSArray *dataItems;
+- (UIColor *)randomColor;
 
 @end

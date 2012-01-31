@@ -10,4 +10,11 @@
 
 @interface GDIDialSlice : UIView
 
+- (id)initWithRadius:(CGFloat)r width:(CGFloat)width;
+
+@property(nonatomic,readonly) CGFloat radius;
+@property(nonatomic,readonly) CGFloat width;
+
+- (CGFloat)sizeInRadians;
+
 @end
