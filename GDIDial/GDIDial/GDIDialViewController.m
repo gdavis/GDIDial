@@ -17,7 +17,6 @@
 @property(strong,nonatomic) UIView *rotatingSlicesContainerView;
 @property(nonatomic) CGFloat initialRotation;
 @property(nonatomic) CGFloat currentRotation;
-@property(nonatomic) CGFloat totalRotation;
 @property(nonatomic) CGFloat velocity;
 @property(nonatomic) CGPoint lastPoint;
 @property(nonatomic) CGPoint dialPoint;
@@ -61,7 +60,6 @@
 @synthesize gestureView = _gestureView;
 @synthesize initialRotation = _initialRotation;
 @synthesize currentRotation = _currentRotation;
-@synthesize totalRotation = _totalRotation;
 @synthesize velocity = _velocity;
 @synthesize lastPoint = _lastPoint;
 @synthesize dialPoint = _dialPoint;
@@ -294,7 +292,6 @@
 
 - (void)rotateDialByRadians:(CGFloat)radians
 {    
-    _totalRotation += radians;
     _currentRotation += radians;
     
     if (fabsf(_currentRotation) > M_PI * 2) {
