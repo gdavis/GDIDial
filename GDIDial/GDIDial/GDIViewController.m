@@ -28,7 +28,7 @@
     _dataItems = [NSArray arrayWithObjects:@"One", @"Two", @"Three",@"Four", nil];
     GDIDialViewController *dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil dataSource:self];
     dialViewController.dialRadius = kDialRadius;
-    dialViewController.dialPosition = GDIDialPositionBottom;
+    dialViewController.dialPosition = GDIDialPositionRight;
     [self.view addSubview:dialViewController.view];
 }
 

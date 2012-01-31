@@ -12,6 +12,7 @@
 @implementation GDIDialSlice
 @synthesize radius = _radius;
 @synthesize width = _width;
+@synthesize rotation = _rotation;
 @synthesize sliceLayer = _sliceLayer;
 
 - (id)initWithRadius:(CGFloat)r width:(CGFloat)width
@@ -53,6 +54,12 @@
 - (CGFloat)sizeInRadians
 {
     return _width / _radius;
+}
+
+- (void)setRotation:(CGFloat)rotation
+{
+    _rotation = rotation;
+    self.transform = CGAffineTransformMakeRotation(_rotation);
 }
 
 

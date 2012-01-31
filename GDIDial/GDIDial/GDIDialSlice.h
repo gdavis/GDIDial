@@ -15,6 +15,7 @@
 
 @property(nonatomic,readonly) CGFloat radius;
 @property(nonatomic,readonly) CGFloat width;
+@property(nonatomic) CGFloat rotation;
 @property(strong,nonatomic,readonly) CAShapeLayer *sliceLayer;
 
 - (CGFloat)sizeInRadians;
