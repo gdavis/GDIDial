@@ -15,16 +15,21 @@
 
 @property(strong,nonatomic) UIView *rotatingDialContainerView;
 @property(strong,nonatomic) UIView *rotatingSlicesContainerView;
+@property(nonatomic) CGFloat initialRotation;
 @property(nonatomic) CGFloat currentRotation;
 @property(nonatomic) CGFloat velocity;
 @property(nonatomic) CGPoint lastPoint;
 @property(nonatomic) CGPoint dialPoint;
 @property(strong,nonatomic) NSTimer *decelerationTimer;
 @property(strong,nonatomic) NSMutableArray *visibleSlices;
+@property(nonatomic) NSUInteger indexOfFirstSlice;
 
-- (void)initDialPoint;
+- (void)initializeDialPoint;
 - (void)buildVisibleSlices;
 - (void)setInitialStartingPosition;
+- (void)updateVisibleSlices;
+
+- (void)addEndSlice;
 
 - (void)beginDeceleration;
 - (void)endDeceleration;
@@ -49,12 +54,14 @@
 @synthesize rotatingSlicesContainerView = _rotatingSlicesContainerView;
 @synthesize rotatingDialContainerView = _rotatingDialContainerView;
 @synthesize gestureView = _gestureView;
+@synthesize initialRotation = _initialRotation;
 @synthesize currentRotation = _currentRotation;
 @synthesize velocity = _velocity;
 @synthesize lastPoint = _lastPoint;
 @synthesize dialPoint = _dialPoint;
 @synthesize decelerationTimer = _decelerationTimer;
 @synthesize visibleSlices = _visibleSlices;
+@synthesize indexOfFirstSlice = _indexOfFirstSlice;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource
@@ -144,25 +151,26 @@
 #pragma mark - Private Methods
 
 
-- (void)initDialPoint
+- (void)initializeDialPoint
 {
     if (_dialPosition == GDIDialPositionTop) {
-        
+        _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(-90));
     }
     else if (_dialPosition == GDIDialPositionBottom) {
-
+        _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(90));
     }
     else if (_dialPosition == GDIDialPositionLeft) {
-
+        _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(-180));
     }
     else {
-
+        _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(0));
     }
 }
 
 - (void)buildVisibleSlices
 {
     _visibleSlices = [NSMutableArray array];
+    _indexOfFirstSlice = 0;
     
     NSUInteger dl = [_dataSource numberOfSlicesForDial];
     
@@ -187,22 +195,39 @@
     }
 }
 
+
+- (void)addEndSlice
+{
+    GDIDialSlice *lastSlice = [_visibleSlices lastObject];
+    CGFloat currentRadians = atan2(lastSlice.transform.b, lastSlice.transform.a) - [lastSlice sizeInRadians]*.5;
+    
+    GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:_indexOfFirstSlice + [_visibleSlices count]];
+    
+    slice.transform = CGAffineTransformMakeRotation( currentRadians - [slice sizeInRadians] * .5 );
+//    currentRadians -= [slice sizeInRadians];
+    
+    [_rotatingSlicesContainerView addSubview:slice];
+    [_visibleSlices addObject:slice];
+}
+
+
 - (void)setInitialStartingPosition
 {
     if (_dialPosition == GDIDialPositionTop) {
-        _currentRotation = degreesToRadians(-90);
+        _initialRotation = degreesToRadians(-90);
     }
     else if (_dialPosition == GDIDialPositionBottom) {
-        _currentRotation = degreesToRadians(90);
+        _initialRotation = degreesToRadians(90);
     }
     else if (_dialPosition == GDIDialPositionLeft) {
-        _currentRotation = degreesToRadians(180);
+        _initialRotation = degreesToRadians(180);
     }
     else {
-        _currentRotation = 0;
+        _initialRotation = 0;
     }
-    _rotatingSlicesContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
-    _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
+    _currentRotation = _initialRotation;
+    _rotatingSlicesContainerView.transform = CGAffineTransformMakeRotation(_initialRotation);
+    _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_initialRotation);
 }
 
 
@@ -216,6 +241,37 @@
     _currentRotation += radians;
     _rotatingSlicesContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
     _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
+    
+    [self updateVisibleSlices];
+}
+
+
+- (void)updateVisibleSlices
+{
+    // check the first and last slices to see if we need to build new slices
+//    GDIDialSlice *firstSlice = [self.visibleSlices objectAtIndex:0];
+//    GDIDialSlice *lastSlice = [self.visibleSlices lastObject];
+//    CGFloat lastSliceRadians = atan2(lastSlice.transform.b, lastSlice.transform.a) - [lastSlice sizeInRadians]*.5;
+    
+    
+//    CGFloat visibleDistance = degreesToRadians(180);
+    
+//    CGFloat rotationDelta = _initialRotation - _currentRotation; 
+//    NSLog(@"rotationDelta: %.2f, visibleSlicesTotalRadians: %.2f", rotationDelta, lastSliceRadians);
+    
+//    if (rotationDelta > 0) {
+//        NSLog(@"daddy needs a new first slice");
+//    }
+    
+//    if ( [lastSlice sizeInRadians]) {
+//        NSLog(@"daddy needs a new last slice");
+//        [self addEndSlice];
+//    }
+
+    
+    
+    
+//    NSLog(@"current rotation radians: %.2f, degrees: %2.f", _currentRotation, radiansToDegrees(_currentRotation));
 }
 
 
