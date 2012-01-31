@@ -17,6 +17,7 @@
 @property(strong,nonatomic) UIView *rotatingSlicesContainerView;
 @property(nonatomic) CGFloat initialRotation;
 @property(nonatomic) CGFloat currentRotation;
+@property(nonatomic) CGFloat totalRotation;
 @property(nonatomic) CGFloat velocity;
 @property(nonatomic) CGPoint lastPoint;
 @property(nonatomic) CGPoint dialPoint;
@@ -60,6 +61,7 @@
 @synthesize gestureView = _gestureView;
 @synthesize initialRotation = _initialRotation;
 @synthesize currentRotation = _currentRotation;
+@synthesize totalRotation = _totalRotation;
 @synthesize velocity = _velocity;
 @synthesize lastPoint = _lastPoint;
 @synthesize dialPoint = _dialPoint;
@@ -172,6 +174,7 @@
     }
 }
 
+
 - (void)buildVisibleSlices
 {
     _visibleSlices = [NSMutableArray array];
@@ -218,6 +221,7 @@
     [_visibleSlices insertObject:slice atIndex:0];
 }
 
+
 - (void)removeFirstSlice
 {
     GDIDialSlice *firstSlice = [_visibleSlices objectAtIndex:0];
@@ -230,6 +234,7 @@
     }
 }
 
+
 - (void)addEndSlice
 {
     GDIDialSlice *lastSlice = [_visibleSlices lastObject];
@@ -237,7 +242,7 @@
     
     _indexOfLastSlice++;
     if (_indexOfLastSlice >= [_dataSource numberOfSlicesForDial]) {
-        _indexOfFirstSlice = 0;
+        _indexOfLastSlice = 0;
     }
     
     GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:_indexOfLastSlice];
@@ -246,6 +251,7 @@
     [_rotatingSlicesContainerView addSubview:slice];
     [_visibleSlices addObject:slice];
 }
+
 
 - (void)removeEndSlice
 {
@@ -285,8 +291,10 @@
     
 }
 
+
 - (void)rotateDialByRadians:(CGFloat)radians
 {    
+    _totalRotation += radians;
     _currentRotation += radians;
     
     if (fabsf(_currentRotation) > M_PI * 2) {
@@ -298,8 +306,11 @@
         }
     }
     
-//    _currentRotation = fmodf(_currentRotation, M_PI*2);
-    _rotatingSlicesContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
+    NSArray *slices = _rotatingSlicesContainerView.subviews;
+    for (GDIDialSlice *slice in slices) {
+        slice.rotation += radians;
+    }
+    
     _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
     
     [self updateVisibleSlices];
@@ -307,65 +318,39 @@
 
 
 - (void)updateVisibleSlices
-{
-    NSLog(@"-----");
-    
-    CGFloat visibleDistance = -M_PI;
-    CGFloat totalDistance = M_PI*2;
-    CGFloat normalizedRotation = _currentRotation - _initialRotation;
-    
-//    NSLog(@"currentRotation: %.2f, normalizedRotation: %.2f, initialRotation: %.2f, degrees: %.2f", _currentRotation, normalizedRotation, _initialRotation, radiansToDegrees(normalizedRotation));
-    
+{    
+    CGFloat visibleDistance = -M_PI;    
     
     GDIDialSlice *firstSlice = [_visibleSlices objectAtIndex:0];
 
     CGFloat firstSliceRotation = firstSlice.rotation;
+    
     CGFloat firstSliceLeftSideRadians = firstSliceRotation + [firstSlice sizeInRadians]*.5;
     CGFloat firstSliceRightSideRadians = firstSliceRotation - [firstSlice sizeInRadians]*.5;
     
-    CGFloat firstSliceLeftSideRelativeRadians = normalizedRotation +  firstSliceLeftSideRadians;
-    CGFloat firstSliceRightSideRelativeRadians = normalizedRotation + firstSliceRightSideRadians;
-    
-    
-    NSLog(@"firstSliceRotation: %.4f, firstSliceLeftSideRadians: %.4f, firstSliceRightSideRadians: %.4f", firstSliceRotation, firstSliceLeftSideRadians, firstSliceRightSideRadians);
-    
-    NSLog(@"normalizedRotation: %.2f, firstSliceLeftSideRelativeRadians: %.2f, firstSliceRightSideRelativeRadians: %.2f", normalizedRotation, firstSliceLeftSideRelativeRadians, firstSliceRightSideRelativeRadians);
-    
-    if ( firstSliceLeftSideRelativeRadians < 0 ) {
-        NSLog(@"add first slice");
+    if ( firstSliceLeftSideRadians < 0 ) {
         [self addFirstSlice];
     }
     
-    if ( firstSliceRightSideRelativeRadians > 0 ) {
-        NSLog(@"remove first slice");
+    if ( firstSliceRightSideRadians > 0 ) {
         [self removeFirstSlice];
     }
     
     
-    /*
     GDIDialSlice *lastSlice = [_visibleSlices lastObject];
     
     CGFloat lastSliceRotation = lastSlice.rotation;
+    
     CGFloat lastSliceLeftSideRadians = lastSliceRotation + [lastSlice sizeInRadians]*.5;
     CGFloat lastSliceRightSideRadians = lastSliceRotation - [lastSlice sizeInRadians]*.5;    
     
-    CGFloat lastSliceLeftSideRelativeRadians = normalizedRotation + lastSliceLeftSideRadians;
-    CGFloat lastSliceRightSideRelativeRadians = normalizedRotation + lastSliceRightSideRadians;
-    
-    NSLog(@"lastSliceLeftSideRadians: %.2f, lastSliceRightSideRadians: %.2f", lastSliceLeftSideRadians, lastSliceRightSideRadians);
-    NSLog(@"visibleDistance: %.2f, normalizedRotation: %.2f, lastSliceLeftSideRadians: %.2f, lastSliceRightSideRelativeRadians: %.2f", visibleDistance, normalizedRotation, lastSliceLeftSideRelativeRadians, lastSliceRightSideRelativeRadians);
-    
-    if ( lastSliceRightSideRelativeRadians > visibleDistance ) {
-        NSLog(@"add last slice");
+    if ( lastSliceLeftSideRadians > visibleDistance ) {
         [self addEndSlice];
     }
     
-    if ( lastSliceLeftSideRelativeRadians < visibleDistance ) {
-        NSLog(@"remove last slice");
+    if ( lastSliceRightSideRadians < visibleDistance ) {
         [self removeEndSlice];
     }
-    */
-    
     
 //    NSLog(@"current rotation radians: %.2f, degrees: %2.f", _currentRotation, radiansToDegrees(_currentRotation));
 }
@@ -464,7 +449,7 @@
 {
 //    NSLog(@"gestureView:touchEndedAtPoint: %@", NSStringFromCGPoint(point));
     
-//    [self beginDeceleration];
+    [self beginDeceleration];
 }
 
 
