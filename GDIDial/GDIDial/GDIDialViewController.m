@@ -18,10 +18,13 @@
 @property(nonatomic) CGFloat currentRotation;
 @property(nonatomic) CGFloat velocity;
 @property(nonatomic) CGPoint lastPoint;
+@property(nonatomic) CGPoint dialPoint;
 @property(strong,nonatomic) NSTimer *decelerationTimer;
 @property(strong,nonatomic) NSMutableArray *visibleSlices;
 
+- (void)initDialPoint;
 - (void)buildVisibleSlices;
+- (void)setInitialStartingPosition;
 
 - (void)beginDeceleration;
 - (void)endDeceleration;
@@ -49,6 +52,7 @@
 @synthesize currentRotation = _currentRotation;
 @synthesize velocity = _velocity;
 @synthesize lastPoint = _lastPoint;
+@synthesize dialPoint = _dialPoint;
 @synthesize decelerationTimer = _decelerationTimer;
 @synthesize visibleSlices = _visibleSlices;
 
@@ -104,7 +108,7 @@
     [self.view addSubview:_gestureView];
     
     [self buildVisibleSlices];
-    
+    [self setInitialStartingPosition];
 }
 
 
@@ -140,47 +144,67 @@
 #pragma mark - Private Methods
 
 
+- (void)initDialPoint
+{
+    if (_dialPosition == GDIDialPositionTop) {
+        
+    }
+    else if (_dialPosition == GDIDialPositionBottom) {
+
+    }
+    else if (_dialPosition == GDIDialPositionLeft) {
+
+    }
+    else {
+
+    }
+}
+
 - (void)buildVisibleSlices
 {
     _visibleSlices = [NSMutableArray array];
     
     NSUInteger dl = [_dataSource numberOfSlicesForDial];
     
-    
     // we limit our dial to only show half of the dial at a time.
     // this allows us to have an infinite number of slices within the dial
     CGFloat maxRadians = degreesToRadians(180);
-    
-    
-    CGFloat offsetRadians = 0;
-    if (_dialPosition == GDIDialPositionBottom) {
-        offsetRadians = degreesToRadians(90);
-    }
-    else if (_dialPosition == GDIDialPositionLeft) {
-        offsetRadians = degreesToRadians(180);
-    }
-    else if (_dialPosition == GDIDialPositionTop) {
-        offsetRadians = degreesToRadians(270);
-    }
-    
-    CGFloat totalRadians = 0.f;
+    CGFloat currentRadians = 0.f;
     
     for (int i=0; i<dl; i++) {
         
         GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:i];
         
-        slice.transform = CGAffineTransformMakeRotation( totalRadians + offsetRadians );
+        slice.transform = CGAffineTransformMakeRotation( currentRadians - [slice sizeInRadians] * .5 );
+        currentRadians -= [slice sizeInRadians];
         
         [_rotatingSlicesContainerView addSubview:slice];
         [_visibleSlices addObject:slice];
         
-        totalRadians -= [slice sizeInRadians];
-        
-        if (totalRadians <= -maxRadians) {
+        if (currentRadians <= -maxRadians) {
             break;
         }
     }
 }
+
+- (void)setInitialStartingPosition
+{
+    if (_dialPosition == GDIDialPositionTop) {
+        _currentRotation = degreesToRadians(-90);
+    }
+    else if (_dialPosition == GDIDialPositionBottom) {
+        _currentRotation = degreesToRadians(90);
+    }
+    else if (_dialPosition == GDIDialPositionLeft) {
+        _currentRotation = degreesToRadians(180);
+    }
+    else {
+        _currentRotation = 0;
+    }
+    _rotatingSlicesContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
+    _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
+}
+
 
 - (void)rotateToNearestSlice
 {
@@ -190,8 +214,8 @@
 - (void)rotateDialByRadians:(CGFloat)radians
 {
     _currentRotation += radians;
-    _rotatingSlicesContainerView.transform = CGAffineTransformRotate(_rotatingDialContainerView.transform, radians);    
-    _rotatingDialContainerView.transform = CGAffineTransformRotate(_rotatingDialContainerView.transform, radians);    
+    _rotatingSlicesContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
+    _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
 }
 
 

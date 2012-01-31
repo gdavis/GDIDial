@@ -75,8 +75,9 @@
 
 - (GDIDialSlice *)viewForDialSliceAtIndex:(NSUInteger)index
 {
-    CGFloat width = 100.f;
+    CGFloat width = ((rand() % 50) - 25.f) + 100.f;
     
+    NSLog(@"slice width: %.2f", width );
     GDIDialSlice *slice = [[GDIDialSlice alloc] initWithRadius:kDialRadius width:width];
     
 //    UIView *debugView = [[UIView alloc] initWithFrame:CGRectMake(-width*.5, 0, width, kDialRadius)];
