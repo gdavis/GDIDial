@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface GDIDialSlice : UIView
 
@@ -14,7 +15,9 @@
 
 @property(nonatomic,readonly) CGFloat radius;
 @property(nonatomic,readonly) CGFloat width;
+@property(strong,nonatomic,readonly) CAShapeLayer *sliceLayer;
 
 - (CGFloat)sizeInRadians;
+CGPoint cartesianCoordinateFromPolar(float radius, float radians);
 
 @end

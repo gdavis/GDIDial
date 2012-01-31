@@ -79,15 +79,19 @@
     
     GDIDialSlice *slice = [[GDIDialSlice alloc] initWithRadius:kDialRadius width:width];
     
-    UIView *debugView = [[UIView alloc] initWithFrame:CGRectMake(-width*.5, 0, width, kDialRadius)];
-    debugView.backgroundColor = [self randomColor];
-    [slice addSubview:debugView];
+//    UIView *debugView = [[UIView alloc] initWithFrame:CGRectMake(-width*.5, 0, width, kDialRadius)];
+//    debugView.backgroundColor = [self randomColor];
+//    debugView.opaque = NO;
+//    [slice addSubview:debugView];
+    
+    slice.sliceLayer.fillColor = [[self randomColor] CGColor];
     
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-width*.5, 0, width, kDialRadius)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-width*.5, kDialRadius-50, width, 50)];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = UITextAlignmentCenter;
     label.text = [NSString stringWithFormat:@"%i", index];
+    label.opaque = NO;
     [slice addSubview:label];
     
     return slice;

@@ -12,8 +12,8 @@
 
 
 @interface GDIDialGestureView()
-- (void)buildDialArea;
-CGPoint cartesianCoordinateFromPolar(float radius, float radians);
+//- (void)buildDialArea;
+//CGPoint cartesianCoordinateFromPolar(float radius, float radians);
 @end
 
 
@@ -34,6 +34,7 @@ CGPoint cartesianCoordinateFromPolar(float radius, float radians);
 
 #pragma mark - Private Methods
 
+/*
 - (void)buildDialArea
 {
     CAShapeLayer *dialOutline = [CAShapeLayer layer];
@@ -83,16 +84,17 @@ CGPoint cartesianCoordinateFromPolar(float radius, float radians);
     originDot.path = dotPath;
     [self.layer addSublayer:originDot];
 }
+*/
 
-CGPoint cartesianCoordinateFromPolar(float radius, float radians)
-{
-    float x,y;
-    
-    x = radius * cosf(radians);
-    y = radius * sinf(radians);
-    
-    return CGPointMake(x, y);
-}
+//CGPoint cartesianCoordinateFromPolar(float radius, float radians)
+//{
+//    float x,y;
+//    
+//    x = radius * cosf(radians);
+//    y = radius * sinf(radians);
+//    
+//    return CGPointMake(x, y);
+//}
 
 #pragma mark - Touch Handling
 

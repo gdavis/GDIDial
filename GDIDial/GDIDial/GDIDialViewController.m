@@ -146,7 +146,11 @@
     
     NSUInteger dl = [_dataSource numberOfSlicesForDial];
     
+    
+    // we limit our dial to only show half of the dial at a time.
+    // this allows us to have an infinite number of slices within the dial
     CGFloat maxRadians = degreesToRadians(180);
+    
     
     CGFloat offsetRadians = 0;
     if (_dialPosition == GDIDialPositionBottom) {
@@ -220,15 +224,15 @@
 
 - (void)beginDeceleration
 {
-    NSLog(@"begin deceleration with velocity: %.2f", _velocity);
+//    NSLog(@"begin deceleration with velocity: %.2f", _velocity);
     [_decelerationTimer invalidate];
-    _decelerationTimer = [NSTimer scheduledTimerWithTimeInterval:.03f target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
+    _decelerationTimer = [NSTimer scheduledTimerWithTimeInterval:kDecelerationInterval target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
 }
 
 
 - (void)endDeceleration
 {
-    NSLog(@"stop deceleration");
+//    NSLog(@"stop deceleration");
     
     [_decelerationTimer invalidate];
     self.decelerationTimer = nil;
@@ -255,7 +259,7 @@
 
 - (void)gestureView:(GDIDialGestureView *)gv touchBeganAtPoint:(CGPoint)point
 {
-    NSLog(@"gestureView:touchBeganAtPoint: %@", NSStringFromCGPoint(point));
+//    NSLog(@"gestureView:touchBeganAtPoint: %@", NSStringFromCGPoint(point));
     
     // reset the last point to where we start from.
     _lastPoint = [self normalizedPoint:point inView:gv];
