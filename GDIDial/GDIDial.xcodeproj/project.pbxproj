@@ -20,7 +20,7 @@
 		77B2D33014D6FE2600ABB176 /* GDIDialSlice.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */; };
 		77B2D33214D6FF3000ABB176 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77B2D33114D6FF3000ABB176 /* QuartzCore.framework */; };
 		77B2D33514D7056F00ABB176 /* GDIDialGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */; };
-		77B2D33C14D7295B00ABB176 /* GDIMath.c in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33A14D70A6200ABB176 /* GDIMath.c */; };
+		77B2D33C14D7295B00ABB176 /* GDIMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33A14D70A6200ABB176 /* GDIMath.m */; };
 		77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D33D14D740EE00ABB176 /* dial-ring.png */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +46,7 @@
 		77B2D33114D6FF3000ABB176 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		77B2D33314D7056F00ABB176 /* GDIDialGestureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIDialGestureView.h; sourceTree = "<group>"; };
 		77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIDialGestureView.m; sourceTree = "<group>"; };
-		77B2D33A14D70A6200ABB176 /* GDIMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GDIMath.c; sourceTree = "<group>"; };
+		77B2D33A14D70A6200ABB176 /* GDIMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIMath.m; sourceTree = "<group>"; };
 		77B2D33B14D7130700ABB176 /* GDIMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIMath.h; sourceTree = "<group>"; };
 		77B2D33D14D740EE00ABB176 /* dial-ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-ring.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,7 +131,7 @@
 				77B2D32E14D6FE2600ABB176 /* GDIDialSlice.h */,
 				77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */,
 				77B2D33B14D7130700ABB176 /* GDIMath.h */,
-				77B2D33A14D70A6200ABB176 /* GDIMath.c */,
+				77B2D33A14D70A6200ABB176 /* GDIMath.m */,
 			);
 			name = Dial;
 			sourceTree = "<group>";
@@ -200,7 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77B2D33C14D7295B00ABB176 /* GDIMath.c in Sources */,
+				77B2D33C14D7295B00ABB176 /* GDIMath.m in Sources */,
 				77B2D31814D6FA5700ABB176 /* main.m in Sources */,
 				77B2D31C14D6FA5700ABB176 /* GDIAppDelegate.m in Sources */,
 				77B2D31F14D6FA5700ABB176 /* GDIViewController.m in Sources */,
@@ -320,6 +320,7 @@
 				77B2D32714D6FA5700ABB176 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

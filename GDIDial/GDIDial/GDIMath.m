@@ -13,6 +13,15 @@
 
 #define ARC4RANDOM_MAX      0x100000000
 
+CGPoint cartesianCoordinateFromPolar(float radius, float radians)
+{
+    float x,y;
+    
+    x = radius * cosf(radians);
+    y = radius * sinf(radians);
+    
+    return CGPointMake(x, y);
+}
 
 float degreesToRadians(float degrees)
 {

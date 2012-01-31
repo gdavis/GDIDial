@@ -24,7 +24,6 @@
         // create a layer slice which represents the physical shape of the slice
         _sliceLayer = [CAShapeLayer layer];
         
-        
         CGFloat radiansOffset = degreesToRadians(90);
         CGPoint botRightCorner = cartesianCoordinateFromPolar(_radius, (-width*.5 / _radius) + radiansOffset );
         CGPoint botLeftCorner = cartesianCoordinateFromPolar(_radius, (width*.5 / _radius) + radiansOffset );
@@ -54,17 +53,6 @@
 - (CGFloat)sizeInRadians
 {
     return _width / _radius;
-}
-
-
-CGPoint cartesianCoordinateFromPolar(float radius, float radians)
-{
-    float x,y;
-    
-    x = radius * cosf(radians);
-    y = radius * sinf(radians);
-    
-    return CGPointMake(x, y);
 }
 
 

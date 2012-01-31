@@ -70,7 +70,7 @@
 
 - (NSUInteger)numberOfSlicesForDial
 {
-    return 100; //[_dataItems count];
+    return 100;
 }
 
 - (GDIDialSlice *)viewForDialSliceAtIndex:(NSUInteger)index
@@ -80,11 +80,6 @@
     NSLog(@"slice width: %.2f", width );
     GDIDialSlice *slice = [[GDIDialSlice alloc] initWithRadius:kDialRadius width:width];
     
-//    UIView *debugView = [[UIView alloc] initWithFrame:CGRectMake(-width*.5, 0, width, kDialRadius)];
-//    debugView.backgroundColor = [self randomColor];
-//    debugView.opaque = NO;
-//    [slice addSubview:debugView];
-    
     slice.sliceLayer.fillColor = [[self randomColor] CGColor];
     
     
@@ -92,6 +87,8 @@
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = UITextAlignmentCenter;
     label.text = [NSString stringWithFormat:@"%i", index];
+    label.textColor = [UIColor whiteColor];
+    label.shadowColor = [UIColor blackColor];
     label.opaque = NO;
     [slice addSubview:label];
     
@@ -103,7 +100,7 @@
     CGFloat red =  (CGFloat)random()/(CGFloat)RAND_MAX;
     CGFloat blue = (CGFloat)random()/(CGFloat)RAND_MAX;
     CGFloat green = (CGFloat)random()/(CGFloat)RAND_MAX;
-    return [UIColor colorWithRed:red green:green blue:blue alpha:.5];
+    return [UIColor colorWithRed:red green:green blue:blue alpha:.25];
 }
 
 

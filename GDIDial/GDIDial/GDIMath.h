@@ -5,6 +5,9 @@
 //  Created by Grant Davis on 1/30/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+#import <UIKit/UIKit.h>
+
+CGPoint cartesianCoordinateFromPolar(float radius, float radians);
 
 float degreesToRadians(float degrees);
 float radiansToDegrees(float radians);
