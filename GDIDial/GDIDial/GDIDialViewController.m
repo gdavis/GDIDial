@@ -399,8 +399,8 @@
     CGPoint normalizedPoint = [self normalizedPoint:point inView:view];
     
     CGFloat angleBetweenInitalTouchAndCenter = atan2f(_lastPoint.y, _lastPoint.x);
-    CGFloat angleBetweenCurrerntTouchAndCenter = atan2f(normalizedPoint.y, normalizedPoint.x);
-    CGFloat rotationAngle = angleBetweenCurrerntTouchAndCenter - angleBetweenInitalTouchAndCenter;
+    CGFloat angleBetweenCurrentTouchAndCenter = atan2f(normalizedPoint.y, normalizedPoint.x);
+    CGFloat rotationAngle = angleBetweenCurrentTouchAndCenter - angleBetweenInitalTouchAndCenter;
     
     // fix large values that can throw off the velocity.
     // this fixes those values and uses the "short way" to determine the rotation
