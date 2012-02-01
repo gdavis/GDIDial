@@ -309,58 +309,6 @@
 }
 
 
-- (void)rotateToNearestSlice
-{
-    float closestDistance = FLT_MAX;
-    
-    NSLog(@"dial point: %@, dial rotation: %.2f, currentRotation: %.2f, initialRotation: %.2f", NSStringFromCGPoint(_dialPoint), _dialRotation, _currentRotation, _initialRotation);
-    
-    for (int i=0; i<[_visibleSlices count]; i++) {
-        GDIDialSlice *slice = [_visibleSlices objectAtIndex:i];
-        
-        float dist = ( _dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
-        
-        NSLog(@"slice rotation: %.2f, distance from dial: %.2f", slice.rotation, dist);
-        
-        if (fabsf(dist) < fabsf(closestDistance)) {
-            
-            closestDistance = dist;
-            
-            _targetRotation = _currentRotation + dist;
-            _currentIndex = i;
-        }
-    }
-    
-    NSLog(@"closest index is: %i with a distance of: %.2f, targetRotation: %.2f", _currentIndex, closestDistance, _targetRotation);
-    
-    [self beginNearestSliceRotation];
-}
-
-- (void)beginNearestSliceRotation
-{
-    [_rotateToSliceTimer invalidate];
-    _rotateToSliceTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
-}
-
-- (void)endNearestSliceRotation
-{
-    [_rotateToSliceTimer invalidate];
-    _rotateToSliceTimer = nil;
-}
-
-
-- (void)handleRotateToSliceTimer 
-{
-    CGFloat delta = (_targetRotation - _currentRotation) * (1 - _friction);
-    [self rotateDialByRadians:delta];
-    
-    if (fabsf(delta) < .0001) {
-        [self rotateDialByRadians:_targetRotation - _currentRotation];
-        [self endNearestSliceRotation];
-    }
-}
-
-
 - (void)rotateDialByRadians:(CGFloat)radians
 {    
     _currentRotation += radians;
@@ -432,12 +380,18 @@
     CGFloat angleBetweenCurrerntTouchAndCenter = atan2f(normalizedPoint.y, normalizedPoint.x);
     CGFloat rotationAngle = angleBetweenCurrerntTouchAndCenter - angleBetweenInitalTouchAndCenter;
     
-    // fix large, negative values that can throw off the velocity.
+    // fix large values that can throw off the velocity.
     // this fixes those values and uses the "short way" to determine the rotation
     float angle1 = M_PI*2 + rotationAngle;
+    float angle2 = rotationAngle;
     if (angle1 < M_PI) {   
         rotationAngle += M_PI*2;
     }
+    if (angle2 > M_PI) {
+        rotationAngle -= M_PI*2;
+    }
+    
+    NSLog(@"rotating dial by: %.3f", rotationAngle);
     
     [self rotateDialByRadians:rotationAngle];
     
@@ -483,6 +437,62 @@
         [self rotateDialByRadians:_velocity];
     }
 }
+
+
+
+- (void)rotateToNearestSlice
+{
+    float closestDistance = FLT_MAX;
+    
+//    NSLog(@"dial point: %@, dial rotation: %.2f, currentRotation: %.2f, initialRotation: %.2f", NSStringFromCGPoint(_dialPoint), _dialRotation, _currentRotation, _initialRotation);
+    
+    for (int i=0; i<[_visibleSlices count]; i++) {
+        GDIDialSlice *slice = [_visibleSlices objectAtIndex:i];
+        
+        float dist = ( _dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
+        
+//        NSLog(@"slice rotation: %.2f, distance from dial: %.2f", slice.rotation, dist);
+        
+        if (fabsf(dist) < fabsf(closestDistance)) {
+            
+            closestDistance = dist;
+            
+            _targetRotation = _currentRotation + dist;
+            _currentIndex = i;
+        }
+    }
+    
+//    NSLog(@"closest index is: %i with a distance of: %.2f, targetRotation: %.2f", _currentIndex, closestDistance, _targetRotation);
+    
+    [self beginNearestSliceRotation];
+}
+
+
+- (void)beginNearestSliceRotation
+{
+    [_rotateToSliceTimer invalidate];
+    _rotateToSliceTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
+}
+
+
+- (void)endNearestSliceRotation
+{
+    [_rotateToSliceTimer invalidate];
+    _rotateToSliceTimer = nil;
+}
+
+
+- (void)handleRotateToSliceTimer 
+{
+    CGFloat delta = (_targetRotation - _currentRotation) * (1 - _friction);
+    [self rotateDialByRadians:delta];
+    
+    if (fabsf(delta) < .0001) {
+        [self rotateDialByRadians:_targetRotation - _currentRotation];
+        [self endNearestSliceRotation];
+    }
+}
+
 
 
 #pragma mark - Gesture View Delegate
