@@ -310,15 +310,6 @@
 {    
     _currentRotation += radians;
     
-    if (fabsf(_currentRotation) > M_PI * 2) {
-        if (_currentRotation < 0) {
-            _currentRotation += M_PI*2;
-        }
-        else {
-            _currentRotation -= M_PI*2;
-        }
-    }
-    
     NSArray *slices = _rotatingSlicesContainerView.subviews;
     for (GDIDialSlice *slice in slices) {
         slice.rotation += radians;
@@ -337,7 +328,6 @@
     GDIDialSlice *firstSlice = [_visibleSlices objectAtIndex:0];
 
     CGFloat firstSliceRotation = firstSlice.rotation;
-    
     CGFloat firstSliceLeftSideRadians = firstSliceRotation + [firstSlice sizeInRadians]*.5;
     CGFloat firstSliceRightSideRadians = firstSliceRotation - [firstSlice sizeInRadians]*.5;
     
@@ -353,11 +343,8 @@
     GDIDialSlice *lastSlice = [_visibleSlices lastObject];
     
     CGFloat lastSliceRotation = lastSlice.rotation;
-    
     CGFloat lastSliceLeftSideRadians = lastSliceRotation + [lastSlice sizeInRadians]*.5;
     CGFloat lastSliceRightSideRadians = lastSliceRotation - [lastSlice sizeInRadians]*.5;    
-    
-//    NSLog(@"lastSliceLeftSideRadians: %.2f, lastSliceRightSideRadians: %.2f", lastSliceLeftSideRadians, lastSliceRightSideRadians );
     
     if ( lastSliceLeftSideRadians > visibleDistance && lastSliceRightSideRadians > visibleDistance) {
         [self addEndSlice];
