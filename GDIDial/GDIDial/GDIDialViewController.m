@@ -314,7 +314,7 @@
     for (int i=0; i<[_visibleSlices count]; i++) {
         GDIDialSlice *slice = [_visibleSlices objectAtIndex:i];
         
-        float dist = ( _dialRotation + _initialRotation - M_PI * .5) - slice.rotation;
+        float dist = ( _dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
         
         NSLog(@"slice rotation: %.2f, distance from dial: %.2f", slice.rotation, dist);
         
