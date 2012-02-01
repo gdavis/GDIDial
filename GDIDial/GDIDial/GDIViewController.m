@@ -77,7 +77,7 @@
 {
     CGFloat width = ((rand() % 50) - 25.f) + 100.f;
     
-    NSLog(@"slice width: %.2f", width );
+//    NSLog(@"slice width: %.2f", width );
     GDIDialSlice *slice = [[GDIDialSlice alloc] initWithRadius:kDialRadius width:width];
     
     slice.sliceLayer.fillColor = [[self randomColor] CGColor];

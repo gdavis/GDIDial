@@ -158,7 +158,7 @@
 
 - (void)initializeDialPoint
 {
-    if (_dialPosition == GDIDialPositionTop) {
+    if (_dialPosition == GDIDialPositionTop) { 
         _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(-90));
     }
     else if (_dialPosition == GDIDialPositionBottom) {
@@ -286,7 +286,23 @@
 
 - (void)rotateToNearestSlice
 {
+    NSUInteger closestIndex = 0;
+    float closestDistance = FLT_MAX;
     
+    for (int i=0; i<[_visibleSlices count]; i++) {
+        GDIDialSlice *slice = [_visibleSlices objectAtIndex:i];
+        
+        CGPoint sliceCenterPoint = cartesianCoordinateFromPolar(_dialRadius, slice.rotation);
+        
+        float dist = distance(sliceCenterPoint.x, sliceCenterPoint.y, _dialPoint.x, _dialPoint.y);
+        
+        if (dist < closestDistance) {
+            closestDistance = dist;
+            closestIndex = i;
+        }
+    }
+    
+    NSLog(@"closest index is: %i with a distance of: %.2f", closestIndex, closestDistance);
 }
 
 
@@ -315,7 +331,7 @@
 
 
 - (void)updateVisibleSlices
-{    
+{        
     CGFloat visibleDistance = -M_PI;    
     
     GDIDialSlice *firstSlice = [_visibleSlices objectAtIndex:0];
@@ -329,7 +345,7 @@
         [self addFirstSlice];
     }
     
-    if ( firstSliceRightSideRadians > 0 ) {
+    else if ( firstSliceRightSideRadians > 0 ) {
         [self removeFirstSlice];
     }
     
@@ -341,11 +357,13 @@
     CGFloat lastSliceLeftSideRadians = lastSliceRotation + [lastSlice sizeInRadians]*.5;
     CGFloat lastSliceRightSideRadians = lastSliceRotation - [lastSlice sizeInRadians]*.5;    
     
-    if ( lastSliceLeftSideRadians > visibleDistance ) {
+//    NSLog(@"lastSliceLeftSideRadians: %.2f, lastSliceRightSideRadians: %.2f", lastSliceLeftSideRadians, lastSliceRightSideRadians );
+    
+    if ( lastSliceLeftSideRadians > visibleDistance && lastSliceRightSideRadians > visibleDistance) {
         [self addEndSlice];
     }
     
-    if ( lastSliceRightSideRadians < visibleDistance ) {
+    if ( lastSliceRightSideRadians < visibleDistance && lastSliceLeftSideRadians < visibleDistance ) {
         [self removeEndSlice];
     }
     
@@ -412,6 +430,7 @@
     
     if ( fabsf(_velocity) < .001f) {
         [self endDeceleration];
+        [self rotateToNearestSlice];
     }
     else {
         [self rotateDialByRadians:_velocity];

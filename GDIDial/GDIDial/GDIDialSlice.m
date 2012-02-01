@@ -40,7 +40,7 @@
         CGPathCloseSubpath(slicePath);
         _sliceLayer.path = slicePath;
         _sliceLayer.lineWidth = 1.f;
-        _sliceLayer.strokeColor = [[UIColor redColor] CGColor];
+//        _sliceLayer.strokeColor = [[UIColor redColor] CGColor];
         CGPathRelease(slicePath);
         
         [self.layer addSublayer:_sliceLayer];
