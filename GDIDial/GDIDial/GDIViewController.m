@@ -90,7 +90,7 @@
 
 - (GDIDialSlice *)viewForDialSliceAtIndex:(NSUInteger)index
 {
-    CGFloat width = ((rand() % 50) - 25.f) + 100.f;
+    CGFloat width = ((rand() % 50) - 25.f) + 200.f;
     
 //    NSLog(@"slice width: %.2f", width );
     GDIDialSlice *slice = [[GDIDialSlice alloc] initWithRadius:kDialRadius width:width];
@@ -115,7 +115,7 @@
     CGFloat red =  (CGFloat)random()/(CGFloat)RAND_MAX;
     CGFloat blue = (CGFloat)random()/(CGFloat)RAND_MAX;
     CGFloat green = (CGFloat)random()/(CGFloat)RAND_MAX;
-    return [UIColor colorWithRed:red green:green blue:blue alpha:.25];
+    return [UIColor colorWithRed:red green:green blue:blue alpha:.5];
 }
 
 

@@ -26,21 +26,17 @@
         _sliceLayer = [CAShapeLayer layer];
         
         CGFloat radiansOffset = degreesToRadians(90);
-        CGPoint botRightCorner = cartesianCoordinateFromPolar(_radius, (-width*.5 / _radius) + radiansOffset );
-        CGPoint botLeftCorner = cartesianCoordinateFromPolar(_radius, (width*.5 / _radius) + radiansOffset );
-//        CGPoint botArcCenter = cartesianCoordinateFromPolar(_radius, radiansOffset);
+        CGPoint botRightCorner = cartesianCoordinateFromPolar(_radius, (-width*.5 / _radius) + radiansOffset );        
         
         CGMutablePathRef slicePath = CGPathCreateMutable();
         CGPathMoveToPoint(slicePath, NULL, 0, 0);
         CGPathAddLineToPoint(slicePath, NULL, botRightCorner.x, botRightCorner.y);
-//        CGPathAddArc(slicePath, NULL, botArcCenter.x, botArcCenter.y, _radius, (-width*.5 / _radius), (width*.5 / _radius), YES);
-//        CGPathAddArcToPoint(slicePath, NULL, botArcCenter.x, botArcCenter.y, botLeftCorner.x, botLeftCorner.y, _radius);
-        CGPathAddLineToPoint(slicePath, NULL, botLeftCorner.x, botLeftCorner.y);
+        CGPathAddArc(slicePath, NULL, 0, 0, _radius, -[self sizeInRadians] * .5 + radiansOffset, [self sizeInRadians] * .5 + radiansOffset, NO);
         CGPathAddLineToPoint(slicePath, NULL, 0, 0);
         CGPathCloseSubpath(slicePath);
         _sliceLayer.path = slicePath;
         _sliceLayer.lineWidth = 1.f;
-//        _sliceLayer.strokeColor = [[UIColor redColor] CGColor];
+        _sliceLayer.strokeColor = [[UIColor redColor] CGColor];
         CGPathRelease(slicePath);
         
         [self.layer addSublayer:_sliceLayer];
