@@ -20,7 +20,10 @@
 @property(nonatomic) CGFloat velocity;
 @property(nonatomic) CGPoint lastPoint;
 @property(nonatomic) CGPoint dialPoint;
+@property(nonatomic) CGFloat dialRotation;
 @property(strong,nonatomic) NSTimer *decelerationTimer;
+@property(strong,nonatomic) NSTimer *rotateToSliceTimer;
+@property(nonatomic) CGFloat targetRotation;
 @property(strong,nonatomic) NSMutableArray *visibleSlices;
 @property(nonatomic) NSInteger indexOfFirstSlice;
 @property(nonatomic) NSInteger indexOfLastSlice;
@@ -38,6 +41,9 @@
 - (void)beginDeceleration;
 - (void)endDeceleration;
 
+- (void)beginNearestSliceRotation;
+- (void)endNearestSliceRotation;
+
 - (void)rotateToNearestSlice;
 - (void)rotateDialByRadians:(CGFloat)radians;
 
@@ -54,6 +60,7 @@
 @synthesize rotatingDialView = _rotatingDialView;
 @synthesize dataSource = _dataSource;
 @synthesize delegate = _delegate;
+@synthesize currentIndex = _currentIndex;
 
 @synthesize rotatingSlicesContainerView = _rotatingSlicesContainerView;
 @synthesize rotatingDialContainerView = _rotatingDialContainerView;
@@ -63,7 +70,10 @@
 @synthesize velocity = _velocity;
 @synthesize lastPoint = _lastPoint;
 @synthesize dialPoint = _dialPoint;
+@synthesize dialRotation = _dialRotation;
 @synthesize decelerationTimer = _decelerationTimer;
+@synthesize rotateToSliceTimer = _rotateToSliceTimer;
+@synthesize targetRotation = _targetRotation;
 @synthesize visibleSlices = _visibleSlices;
 @synthesize indexOfFirstSlice = _indexOfFirstSlice;
 @synthesize indexOfLastSlice = _indexOfLastSlice;
@@ -121,6 +131,7 @@
     
     [self buildVisibleSlices];
     [self setInitialStartingPosition];
+    [self initializeDialPoint];
 }
 
 
@@ -159,17 +170,27 @@
 - (void)initializeDialPoint
 {
     if (_dialPosition == GDIDialPositionTop) { 
-        _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(-90));
+        _dialRotation = degreesToRadians(-90);
     }
     else if (_dialPosition == GDIDialPositionBottom) {
-        _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(90));
+        _dialRotation = degreesToRadians(90);
     }
     else if (_dialPosition == GDIDialPositionLeft) {
-        _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(-180));
+        _dialRotation = degreesToRadians(-180);
     }
     else {
-        _dialPoint = cartesianCoordinateFromPolar(_dialRadius, degreesToRadians(0));
+        _dialRotation = 0;
     }
+    
+    _dialPoint = cartesianCoordinateFromPolar(_dialRadius, _dialRotation);
+    
+    _dialPoint.x += self.view.center.x;
+    _dialPoint.y += self.view.center.y;
+    
+    CALayer *layer = [CALayer layer];
+    layer.frame = CGRectMake(-5 + _dialPoint.x, -5 + _dialPoint.y, 10, 10);
+    layer.backgroundColor = [[UIColor redColor] CGColor];
+    [self.view.layer addSublayer:layer];
 }
 
 
@@ -182,7 +203,7 @@
     
     // we limit our dial to only show half of the dial at a time.
     // this allows us to have an infinite number of slices within the dial
-    CGFloat maxRadians = degreesToRadians(180);
+    CGFloat maxRadians = M_PI;
     CGFloat currentRadians = 0.f;
     
     for (int i=0; i<dl; i++) {
@@ -286,29 +307,70 @@
 
 - (void)rotateToNearestSlice
 {
-    NSUInteger closestIndex = 0;
     float closestDistance = FLT_MAX;
+    
+    NSLog(@"dial point: %@, dial rotation: %.2f, currentRotation: %.2f, initialRotation: %.2f", NSStringFromCGPoint(_dialPoint), _dialRotation, _currentRotation, _initialRotation);
     
     for (int i=0; i<[_visibleSlices count]; i++) {
         GDIDialSlice *slice = [_visibleSlices objectAtIndex:i];
         
-        CGPoint sliceCenterPoint = cartesianCoordinateFromPolar(_dialRadius, slice.rotation);
+        float dist = ( _dialRotation + _initialRotation - M_PI * .5) - slice.rotation;
         
-        float dist = distance(sliceCenterPoint.x, sliceCenterPoint.y, _dialPoint.x, _dialPoint.y);
+        NSLog(@"slice rotation: %.2f, distance from dial: %.2f", slice.rotation, dist);
         
-        if (dist < closestDistance) {
+        if (fabsf(dist) < fabsf(closestDistance)) {
+            
             closestDistance = dist;
-            closestIndex = i;
+            
+            _targetRotation = _currentRotation + dist;
+            _currentIndex = i;
         }
     }
     
-    NSLog(@"closest index is: %i with a distance of: %.2f", closestIndex, closestDistance);
+    NSLog(@"closest index is: %i with a distance of: %.2f, targetRotation: %.2f", _currentIndex, closestDistance, _targetRotation);
+    
+    [self beginNearestSliceRotation];
+}
+
+- (void)beginNearestSliceRotation
+{
+    [_rotateToSliceTimer invalidate];
+    _rotateToSliceTimer = [NSTimer scheduledTimerWithTimeInterval:.016666f target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
+}
+
+- (void)endNearestSliceRotation
+{
+    NSLog(@"endNearestSliceRotation");
+    [_rotateToSliceTimer invalidate];
+    _rotateToSliceTimer = nil;
+    
+    [self rotateDialByRadians:_targetRotation - _currentRotation];
+}
+
+
+- (void)handleRotateToSliceTimer 
+{
+    CGFloat delta = (_targetRotation - _currentRotation) * (1 - kFriction);
+    [self rotateDialByRadians:delta];
+    
+    if (fabsf(delta) < .0001) {
+        [self endNearestSliceRotation];
+    }
 }
 
 
 - (void)rotateDialByRadians:(CGFloat)radians
 {    
     _currentRotation += radians;
+    
+    if (fabsf(_currentRotation) > M_PI * 2) {
+       if (_currentRotation < 0) {
+           _currentRotation += M_PI*2;
+       }
+       else {
+           _currentRotation -= M_PI*2;
+        }
+    }
     
     NSArray *slices = _rotatingSlicesContainerView.subviews;
     for (GDIDialSlice *slice in slices) {
@@ -381,8 +443,6 @@
     _lastPoint = normalizedPoint;
 }
 
-
-
 // the point we are provided is based from the top-left corner of the view instead of from the center.
 // this offsets the positions to make the point based off the center of the view
 - (CGPoint)normalizedPoint:(CGPoint)point inView:(UIView *)view
@@ -435,6 +495,7 @@
     // reset the last point to where we start from.
     _lastPoint = [self normalizedPoint:point inView:gv];
     
+    [self endNearestSliceRotation];
     [self endDeceleration];
     [self trackTouchPoint:point inView:gv];
 }

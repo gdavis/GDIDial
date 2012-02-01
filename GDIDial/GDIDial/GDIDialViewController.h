@@ -17,7 +17,7 @@ typedef enum {
     GDIDialPositionBottom,
 } GDIDialPosition;
 
-#define kFriction .9f
+#define kFriction .95f
 #define kDecelerationInterval 1.f/60.f
 
 @protocol GDIDialViewControllerDataSource, GDIDialViewControllerDelegate;
@@ -30,12 +30,11 @@ typedef enum {
 @property(nonatomic) CGFloat dialRadius;
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDataSource> *dataSource;
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDelegate> *delegate;
-
+@property(nonatomic) NSUInteger currentIndex;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource;
 
 - (void)rotateDialToIndex:(NSUInteger)index;
-
 - (NSArray *)visibleSlices;
 
 @end
