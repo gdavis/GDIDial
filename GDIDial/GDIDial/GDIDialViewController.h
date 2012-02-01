@@ -21,10 +21,13 @@ typedef enum {
 
 @interface GDIDialViewController : UIViewController <GDIDialGestureViewDelegate>
 
-@property (strong, nonatomic) IBOutlet UIView *rotatingDialView;
+@property(strong, nonatomic) IBOutlet UIView *rotatingDialView;
+@property(strong, nonatomic) IBOutlet UIView *dialRegistrationView;
+
 @property(strong, nonatomic, readonly) GDIDialGestureView *gestureView;
 @property(nonatomic) GDIDialPosition dialPosition;
 @property(nonatomic) CGFloat dialRadius;
+@property(nonatomic) CGFloat dialRegistrationViewRadius;
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDataSource> *dataSource;
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDelegate> *delegate;
 @property(nonatomic) NSUInteger currentIndex;

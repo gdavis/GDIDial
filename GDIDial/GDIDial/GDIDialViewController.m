@@ -21,7 +21,7 @@
 @property(nonatomic) CGFloat currentRotation;
 @property(nonatomic) CGFloat velocity;
 @property(nonatomic) CGPoint lastPoint;
-@property(nonatomic) CGPoint dialPoint;
+@property(nonatomic) CGPoint dialRegistrationPoint;
 @property(nonatomic) CGFloat dialRotation;
 @property(strong,nonatomic) NSTimer *decelerationTimer;
 @property(strong,nonatomic) NSTimer *rotateToSliceTimer;
@@ -64,7 +64,9 @@
 
 @synthesize dialPosition = _dialPosition;
 @synthesize dialRadius = _dialRadius;
+@synthesize dialRegistrationViewRadius = _dialRegistrationViewRadius;
 @synthesize rotatingDialView = _rotatingDialView;
+@synthesize dialRegistrationView = _dialRegistrationView;
 @synthesize dataSource = _dataSource;
 @synthesize delegate = _delegate;
 @synthesize currentIndex = _currentIndex;
@@ -77,7 +79,7 @@
 @synthesize currentRotation = _currentRotation;
 @synthesize velocity = _velocity;
 @synthesize lastPoint = _lastPoint;
-@synthesize dialPoint = _dialPoint;
+@synthesize dialRegistrationPoint = _dialRegistrationPoint;
 @synthesize dialRotation = _dialRotation;
 @synthesize decelerationTimer = _decelerationTimer;
 @synthesize rotateToSliceTimer = _rotateToSliceTimer;
@@ -97,6 +99,7 @@
         _dataSource = dataSource;
         _dialPosition = GDIDialPositionBottom;
         _dialRadius = 160.f;
+        _dialRegistrationViewRadius = _dialRadius;
         _friction = kDefaultFriction;
     }
     return self;
@@ -168,27 +171,32 @@
 - (void)initializeDialPoint
 {
     if (_dialPosition == GDIDialPositionTop) { 
+        _dialRegistrationView.transform = CGAffineTransformMakeRotation(degreesToRadians(180));
         _dialRotation = degreesToRadians(-90);
     }
     else if (_dialPosition == GDIDialPositionBottom) {
+        
         _dialRotation = degreesToRadians(90);
     }
     else if (_dialPosition == GDIDialPositionLeft) {
+        _dialRegistrationView.transform = CGAffineTransformMakeRotation(degreesToRadians(90));
         _dialRotation = degreesToRadians(-180);
     }
     else {
+        _dialRegistrationView.transform = CGAffineTransformMakeRotation(degreesToRadians(-90));
         _dialRotation = 0;
     }
     
-    _dialPoint = cartesianCoordinateFromPolar(_dialRadius, _dialRotation);
+    _dialRegistrationPoint = cartesianCoordinateFromPolar(_dialRegistrationViewRadius, _dialRotation);
     
-    _dialPoint.x += self.view.center.x;
-    _dialPoint.y += self.view.center.y;
+    _dialRegistrationPoint.x += self.view.center.x;
+    _dialRegistrationPoint.y += self.view.center.y;
     
-    CALayer *layer = [CALayer layer];
-    layer.frame = CGRectMake(-5 + _dialPoint.x, -5 + _dialPoint.y, 10, 10);
-    layer.backgroundColor = [[UIColor redColor] CGColor];
-    [self.view.layer addSublayer:layer];
+    [self.view addSubview:_dialRegistrationView];
+    
+    _dialRegistrationView.frame = CGRectMake(-_dialRegistrationView.frame.size.width * .5 + _dialRegistrationPoint.x, -_dialRegistrationView.frame.size.height * .5 +_dialRegistrationPoint.y, _dialRegistrationView.frame.size.width, _dialRegistrationView.frame.size.height);
+    
+    _dialRegistrationView.userInteractionEnabled = NO;
 }
 
 

@@ -22,6 +22,8 @@
 		77B2D33514D7056F00ABB176 /* GDIDialGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */; };
 		77B2D33C14D7295B00ABB176 /* GDIMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33A14D70A6200ABB176 /* GDIMath.m */; };
 		77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D33D14D740EE00ABB176 /* dial-ring.png */; };
+		77B2D35A14D9CE2200ABB176 /* dial-registration.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D35814D9CE2100ABB176 /* dial-registration.png */; };
+		77B2D35B14D9CE2200ABB176 /* dial-registration@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		77B2D33A14D70A6200ABB176 /* GDIMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIMath.m; sourceTree = "<group>"; };
 		77B2D33B14D7130700ABB176 /* GDIMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIMath.h; sourceTree = "<group>"; };
 		77B2D33D14D740EE00ABB176 /* dial-ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-ring.png"; sourceTree = "<group>"; };
+		77B2D35814D9CE2100ABB176 /* dial-registration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-registration.png"; sourceTree = "<group>"; };
+		77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-registration@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +126,8 @@
 		77B2D32814D6FA7800ABB176 /* Dial */ = {
 			isa = PBXGroup;
 			children = (
+				77B2D35814D9CE2100ABB176 /* dial-registration.png */,
+				77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */,
 				77B2D33D14D740EE00ABB176 /* dial-ring.png */,
 				77B2D32914D6FA9200ABB176 /* GDIDialViewController.h */,
 				77B2D32A14D6FA9200ABB176 /* GDIDialViewController.m */,
@@ -190,6 +196,8 @@
 				77B2D32214D6FA5700ABB176 /* GDIViewController.xib in Resources */,
 				77B2D32D14D6FA9200ABB176 /* GDIDialView.xib in Resources */,
 				77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */,
+				77B2D35A14D9CE2200ABB176 /* dial-registration.png in Resources */,
+				77B2D35B14D9CE2200ABB176 /* dial-registration@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -30,6 +30,7 @@
     dialViewController.delegate = self;
     dialViewController.dialRadius = kDialRadius;
     dialViewController.dialPosition = GDIDialPositionBottom;
+    dialViewController.dialRegistrationViewRadius = 110.f;
     [self.view addSubview:dialViewController.view];
 }
 
