@@ -156,12 +156,6 @@
 
 #pragma mark - Class Methods
 
-- (void)rotateDialToIndex:(NSUInteger)index
-{
-    
-}
-
-
 - (NSArray *)visibleSlices
 {
     return [NSArray arrayWithArray:_visibleSlices];

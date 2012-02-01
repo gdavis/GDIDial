@@ -32,7 +32,6 @@ typedef enum {
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource;
 
-- (void)rotateDialToIndex:(NSUInteger)index;
 - (NSArray *)visibleSlices;
 
 @end
