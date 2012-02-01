@@ -16,9 +16,9 @@
 @property(nonatomic,readonly) CGFloat radius;
 @property(nonatomic,readonly) CGFloat width;
 @property(nonatomic) CGFloat rotation;
-@property(strong,nonatomic,readonly) CAShapeLayer *sliceLayer;
+@property(strong,nonatomic,readonly) CAShapeLayer *backgroundLayer;
+@property(strong,nonatomic,readonly) UIView *contentView;
 
 - (CGFloat)sizeInRadians;
-CGPoint cartesianCoordinateFromPolar(float radius, float radians);
 
 @end

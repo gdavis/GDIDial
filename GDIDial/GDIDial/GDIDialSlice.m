@@ -13,7 +13,9 @@
 @synthesize radius = _radius;
 @synthesize width = _width;
 @synthesize rotation = _rotation;
-@synthesize sliceLayer = _sliceLayer;
+@synthesize backgroundLayer = _backgroundLayer;
+@synthesize contentView = _contentView;
+
 
 - (id)initWithRadius:(CGFloat)r width:(CGFloat)width
 {
@@ -23,7 +25,7 @@
         _width = width;
         
         // create a layer slice which represents the physical shape of the slice
-        _sliceLayer = [CAShapeLayer layer];
+        _backgroundLayer = [CAShapeLayer layer];
         
         CGFloat radiansOffset = degreesToRadians(90);
         CGPoint botRightCorner = cartesianCoordinateFromPolar(_radius, (-width*.5 / _radius) + radiansOffset );        
@@ -34,12 +36,18 @@
         CGPathAddArc(slicePath, NULL, 0, 0, _radius, -[self sizeInRadians] * .5 + radiansOffset, [self sizeInRadians] * .5 + radiansOffset, NO);
         CGPathAddLineToPoint(slicePath, NULL, 0, 0);
         CGPathCloseSubpath(slicePath);
-        _sliceLayer.path = slicePath;
-        _sliceLayer.lineWidth = 1.f;
-        _sliceLayer.strokeColor = [[UIColor redColor] CGColor];
+        _backgroundLayer.path = slicePath;
+        _backgroundLayer.lineWidth = 1.f;
+        _backgroundLayer.strokeColor = [[UIColor redColor] CGColor];
         CGPathRelease(slicePath);
         
-        [self.layer addSublayer:_sliceLayer];
+        [self.layer addSublayer:_backgroundLayer];
+        
+        _contentView = [[UIView alloc] initWithFrame:CGRectZero];
+        _contentView.clipsToBounds = NO;
+        _contentView.transform = CGAffineTransformMakeRotation([self sizeInRadians] * .5);
+        [self addSubview:_contentView];
+        self.contentView.backgroundColor = [UIColor redColor];
         
         self.opaque = NO;
     }

@@ -1,0 +1,19 @@
+//
+//  GDICurvedLabel.h
+//  GDIDial
+//
+//  Created by Grant Davis on 2/1/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface GDICurvedLabel : UILabel
+
+- (id)initWithRadius:(CGFloat)radius origin:(CGPoint)originPoint sizeInRadians:(CGFloat)radians;
+
+@property(nonatomic,readonly) CGFloat radius;
+@property(nonatomic,readonly) CGFloat radians;
+@property(nonatomic) CGFloat shadowBlur;
+
+@end

@@ -7,6 +7,7 @@
 //
 
 #import "GDIViewController.h"
+#import "GDICurvedLabel.h"
 
 #define kDialRadius 160.f
 
@@ -92,20 +93,20 @@
 {
     CGFloat width = ((rand() % 50) - 25.f) + 200.f;
     
-//    NSLog(@"slice width: %.2f", width );
     GDIDialSlice *slice = [[GDIDialSlice alloc] initWithRadius:kDialRadius width:width];
     
-    slice.sliceLayer.fillColor = [[self randomColor] CGColor];
+    slice.backgroundLayer.fillColor = [[self randomColor] CGColor];
     
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(-width*.5, kDialRadius-50, width, 50)];
+    GDICurvedLabel *label = [[GDICurvedLabel alloc] initWithRadius:kDialRadius-14.f origin:CGPointZero sizeInRadians:[slice sizeInRadians]];
     label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = UITextAlignmentCenter;
-    label.text = [NSString stringWithFormat:@"%i", index];
+    label.text = [NSString stringWithFormat:@"Dial Slice %i", index];
     label.textColor = [UIColor whiteColor];
     label.shadowColor = [UIColor blackColor];
+    label.shadowOffset = CGSizeMake(1, 1);
+    label.font = [UIFont boldSystemFontOfSize:18.f];
     label.opaque = NO;
-    [slice addSubview:label];
+    [slice.contentView addSubview:label];
     
     return slice;
 }
@@ -115,7 +116,7 @@
     CGFloat red =  (CGFloat)random()/(CGFloat)RAND_MAX;
     CGFloat blue = (CGFloat)random()/(CGFloat)RAND_MAX;
     CGFloat green = (CGFloat)random()/(CGFloat)RAND_MAX;
-    return [UIColor colorWithRed:red green:green blue:blue alpha:.5];
+    return [UIColor colorWithRed:red green:green blue:blue alpha:.25];
 }
 
 
