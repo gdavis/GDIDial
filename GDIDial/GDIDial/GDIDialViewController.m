@@ -403,7 +403,8 @@
     CGFloat rotationAngle = angleBetweenCurrentTouchAndCenter - angleBetweenInitalTouchAndCenter;
     
     // fix large values that can throw off the velocity.
-    // this fixes those values and uses the "short way" to determine the rotation
+    // this fixes those values by using the "short way" to determine the rotation. 
+    // some values can come back with a rotation near a full circle with the way its returned from atan2.
     if (M_PI*2 + rotationAngle < M_PI) {   
         rotationAngle += M_PI*2;
     }
@@ -565,7 +566,6 @@
 - (void)gestureView:(GDIDialGestureView *)gv touchEndedAtPoint:(CGPoint)point
 {
 //    NSLog(@"gestureView:touchEndedAtPoint: %@", NSStringFromCGPoint(point));
-    
     [self beginDeceleration];
 }
 
