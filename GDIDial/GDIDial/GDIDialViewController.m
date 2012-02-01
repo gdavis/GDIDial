@@ -382,16 +382,12 @@
     
     // fix large values that can throw off the velocity.
     // this fixes those values and uses the "short way" to determine the rotation
-    float angle1 = M_PI*2 + rotationAngle;
-    float angle2 = rotationAngle;
-    if (angle1 < M_PI) {   
+    if (M_PI*2 + rotationAngle < M_PI) {   
         rotationAngle += M_PI*2;
     }
-    if (angle2 > M_PI) {
+    if (rotationAngle > M_PI) {
         rotationAngle -= M_PI*2;
     }
-    
-    NSLog(@"rotating dial by: %.3f", rotationAngle);
     
     [self rotateDialByRadians:rotationAngle];
     
