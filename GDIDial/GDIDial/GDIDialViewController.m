@@ -30,10 +30,13 @@
 @property(nonatomic) NSUInteger numberOfSlices;
 @property(nonatomic) NSInteger indexOfFirstSlice;
 @property(nonatomic) NSInteger indexOfLastSlice;
+@property(nonatomic) NSUInteger indexOfCurrentSlice;
 
 - (void)initializeDialPoint;
 - (void)buildVisibleSlices;
 - (void)setInitialStartingPosition;
+
+- (void)updateCurrentSlice;
 - (void)updateVisibleSlices;
 
 - (void)addFirstSlice;
@@ -52,6 +55,7 @@
 
 - (CGPoint)normalizedPoint:(CGPoint)point inView:(UIView *)view;
 - (void)trackTouchPoint:(CGPoint)point inView:(UIView*)view;
+- (NSUInteger)indexForNearestSelectedSlice;
 
 @end
 
@@ -82,6 +86,7 @@
 @synthesize numberOfSlices = _numberOfSlices;
 @synthesize indexOfFirstSlice = _indexOfFirstSlice;
 @synthesize indexOfLastSlice = _indexOfLastSlice;
+@synthesize indexOfCurrentSlice = _indexOfCurrentSlice;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource
@@ -316,9 +321,29 @@
         slice.rotation += radians;
     }
     
-    _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);
+    _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);    
     
+    
+    [self updateCurrentSlice];
     [self updateVisibleSlices];
+}
+
+
+- (void)updateCurrentSlice
+{
+    NSUInteger closestSliceIndex = [self indexForNearestSelectedSlice];
+    NSUInteger currentSliceIndex = _indexOfFirstSlice + closestSliceIndex;
+    
+    if (currentSliceIndex > _numberOfSlices-1) {
+        currentSliceIndex = fmodf(currentSliceIndex, _numberOfSlices);
+    }
+    
+    if (currentSliceIndex != _indexOfCurrentSlice) {
+        _indexOfCurrentSlice = currentSliceIndex;
+        if ([_delegate respondsToSelector:@selector(dialViewController:didRotateToIndex:)]) {
+            [_delegate dialViewController:self didRotateToIndex:_indexOfCurrentSlice];
+        }
+    }  
 }
 
 
@@ -485,6 +510,24 @@
     }
 }
 
+
+- (NSUInteger)indexForNearestSelectedSlice
+{
+    CGFloat closestDistance = FLT_MAX;
+    NSUInteger sliceIndex = 0;
+    
+    for (int i=0; i<[_visibleSlices count]; i++) {
+        GDIDialSlice *slice = [_visibleSlices objectAtIndex:i];
+        CGFloat dist = ( _dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
+        
+        if (fabsf(dist) < fabsf(closestDistance)) {
+            
+            closestDistance = dist;
+            sliceIndex = i;
+        }
+    }
+    return sliceIndex;
+}
 
 
 #pragma mark - Gesture View Delegate

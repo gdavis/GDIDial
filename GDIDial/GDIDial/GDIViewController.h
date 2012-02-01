@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GDIDialViewController.h"
 
-@interface GDIViewController : UIViewController <GDIDialViewControllerDataSource>
+@interface GDIViewController : UIViewController <GDIDialViewControllerDataSource, GDIDialViewControllerDelegate>
 
 @property(strong,nonatomic) NSArray *dataItems;
 - (UIColor *)randomColor;

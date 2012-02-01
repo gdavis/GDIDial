@@ -68,6 +68,12 @@
 
 #pragma mark - GDIDialViewControllerDelegate Methods
 
+
+- (void)dialViewController:(GDIDialViewController *)dialVC didRotateToIndex:(NSUInteger)index
+{
+    NSLog(@"%@ did rotate to index: %i", dialVC, index); 
+}
+
 - (void)dialViewController:(GDIDialViewController *)dialVC didSelectIndex:(NSUInteger)selectedIndex
 {
     NSLog(@"%@ did select index: %i", dialVC, selectedIndex);
