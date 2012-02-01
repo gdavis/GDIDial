@@ -45,5 +45,6 @@ typedef enum {
 @end
 
 @protocol GDIDialViewControllerDelegate
+@required
 - (void)dialViewController:(GDIDialViewController *)dialVC didSelectIndex:(NSUInteger)selectedIndex;
 @end

@@ -27,6 +27,7 @@
     
     _dataItems = [NSArray arrayWithObjects:@"One", @"Two", @"Three",@"Four", nil];
     GDIDialViewController *dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil dataSource:self];
+    dialViewController.delegate = self;
     dialViewController.dialRadius = kDialRadius;
     dialViewController.dialPosition = GDIDialPositionBottom;
     [self.view addSubview:dialViewController.view];
@@ -63,6 +64,13 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+#pragma mark - GDIDialViewControllerDelegate Methods
+
+- (void)dialViewController:(GDIDialViewController *)dialVC didSelectIndex:(NSUInteger)selectedIndex
+{
+    NSLog(@"%@ did select index: %i", dialVC, selectedIndex);
 }
 
 

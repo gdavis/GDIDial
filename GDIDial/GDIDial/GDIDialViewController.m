@@ -27,6 +27,7 @@
 @property(strong,nonatomic) NSTimer *rotateToSliceTimer;
 @property(nonatomic) CGFloat targetRotation;
 @property(strong,nonatomic) NSMutableArray *visibleSlices;
+@property(nonatomic) NSUInteger numberOfSlices;
 @property(nonatomic) NSInteger indexOfFirstSlice;
 @property(nonatomic) NSInteger indexOfLastSlice;
 
@@ -78,6 +79,7 @@
 @synthesize rotateToSliceTimer = _rotateToSliceTimer;
 @synthesize targetRotation = _targetRotation;
 @synthesize visibleSlices = _visibleSlices;
+@synthesize numberOfSlices = _numberOfSlices;
 @synthesize indexOfFirstSlice = _indexOfFirstSlice;
 @synthesize indexOfLastSlice = _indexOfLastSlice;
 
@@ -110,6 +112,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // get our slice count
+    _numberOfSlices = [_dataSource numberOfSlicesForDial];
     
     // add rotating dial view
     _rotatingDialContainerView = [[UIView alloc] initWithFrame:CGRectMake(self.view.center.x, self.view.center.y, 0, 0)];
@@ -187,7 +192,7 @@
     _visibleSlices = [NSMutableArray array];
     _indexOfFirstSlice = 0;
     
-    NSUInteger dl = [_dataSource numberOfSlicesForDial];
+    NSUInteger dl = _numberOfSlices;
     
     // we limit our dial to only show half of the dial at a time.
     // this allows us to have an infinite number of slices within the dial
@@ -218,7 +223,7 @@
     
     _indexOfFirstSlice--;
     if (_indexOfFirstSlice < 0) {
-        _indexOfFirstSlice = [_dataSource numberOfSlicesForDial]-1;
+        _indexOfFirstSlice = _numberOfSlices-1;
     }
     
     GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:_indexOfFirstSlice];
@@ -236,7 +241,7 @@
     [_visibleSlices removeObject:firstSlice];
     
     _indexOfFirstSlice++;
-    if (_indexOfFirstSlice > [_dataSource numberOfSlicesForDial]-1) {
+    if (_indexOfFirstSlice > _numberOfSlices-1) {
         _indexOfFirstSlice = 0;
     }
 }
@@ -248,7 +253,7 @@
     CGFloat currentRadians = atan2(lastSlice.transform.b, lastSlice.transform.a) - [lastSlice sizeInRadians]*.5;
     
     _indexOfLastSlice++;
-    if (_indexOfLastSlice >= [_dataSource numberOfSlicesForDial]) {
+    if (_indexOfLastSlice >= _numberOfSlices) {
         _indexOfLastSlice = 0;
     }
     
@@ -268,7 +273,7 @@
     
     _indexOfLastSlice--;
     if (_indexOfLastSlice < 0) {
-        _indexOfLastSlice = [_dataSource numberOfSlicesForDial]-1;
+        _indexOfLastSlice = _numberOfSlices-1;
     }
 }
 
@@ -422,28 +427,34 @@
 
 - (void)rotateToNearestSlice
 {
-    float closestDistance = FLT_MAX;
-    
-//    NSLog(@"dial point: %@, dial rotation: %.2f, currentRotation: %.2f, initialRotation: %.2f", NSStringFromCGPoint(_dialPoint), _dialRotation, _currentRotation, _initialRotation);
+    CGFloat closestDistance = FLT_MAX;
+    NSUInteger sliceIndex = 0;
     
     for (int i=0; i<[_visibleSlices count]; i++) {
         GDIDialSlice *slice = [_visibleSlices objectAtIndex:i];
         
-        float dist = ( _dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
-        
-//        NSLog(@"slice rotation: %.2f, distance from dial: %.2f", slice.rotation, dist);
+        CGFloat dist = ( _dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
         
         if (fabsf(dist) < fabsf(closestDistance)) {
             
             closestDistance = dist;
+            sliceIndex = i;
             
             _targetRotation = _currentRotation + dist;
-            _currentIndex = i;
         }
     }
     
-//    NSLog(@"closest index is: %i with a distance of: %.2f, targetRotation: %.2f", _currentIndex, closestDistance, _targetRotation);
+    // determine the current index of the selected slice
+    _currentIndex = _indexOfFirstSlice + sliceIndex;
     
+    if (_currentIndex > _numberOfSlices-1) {
+        _currentIndex = fmodf(_currentIndex, _numberOfSlices);
+    }
+    
+    // notify the delegate a slice has been selected
+    if([_delegate respondsToSelector:@selector(dialViewController:didSelectIndex:)]) {
+        [_delegate dialViewController:self didSelectIndex:_currentIndex];
+    }
     
     [self beginNearestSliceRotation];
 }
