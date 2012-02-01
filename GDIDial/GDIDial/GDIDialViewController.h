@@ -17,7 +17,7 @@ typedef enum {
     GDIDialPositionBottom,
 } GDIDialPosition;
 
-#define kFriction .8f
+#define kFriction .9f
 #define kDecelerationInterval 1.f/60.f
 
 @protocol GDIDialViewControllerDataSource, GDIDialViewControllerDelegate;
