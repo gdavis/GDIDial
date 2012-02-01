@@ -119,8 +119,6 @@
     self.rotatingDialView.frame = CGRectMake(-self.rotatingDialView.frame.size.width*.5, -self.rotatingDialView.frame.size.height*.5, self.rotatingDialView.frame.size.width, self.rotatingDialView.frame.size.height);
     [_rotatingDialContainerView addSubview:self.rotatingDialView];
     
-    
-    
     // add container for the slices
     _rotatingSlicesContainerView = [[UIView alloc] initWithFrame:CGRectMake(self.view.center.x, self.view.center.y, 0, 0)];
     [self.view addSubview:_rotatingSlicesContainerView];
@@ -292,7 +290,7 @@
         _initialRotation = degreesToRadians(90);
     }
     else if (_dialPosition == GDIDialPositionLeft) {
-        _initialRotation = degreesToRadians(180);
+        _initialRotation = degreesToRadians(-180);
     }
     else {
         _initialRotation = 0;
@@ -453,6 +451,7 @@
     }
     
 //    NSLog(@"closest index is: %i with a distance of: %.2f, targetRotation: %.2f", _currentIndex, closestDistance, _targetRotation);
+    
     
     [self beginNearestSliceRotation];
 }
