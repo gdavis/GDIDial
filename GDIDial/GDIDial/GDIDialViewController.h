@@ -17,9 +17,6 @@ typedef enum {
     GDIDialPositionBottom,
 } GDIDialPosition;
 
-#define kFriction .95f
-#define kDecelerationInterval 1.f/60.f
-
 @protocol GDIDialViewControllerDataSource, GDIDialViewControllerDelegate;
 
 @interface GDIDialViewController : UIViewController <GDIDialGestureViewDelegate>
@@ -31,6 +28,7 @@ typedef enum {
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDataSource> *dataSource;
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDelegate> *delegate;
 @property(nonatomic) NSUInteger currentIndex;
+@property(nonatomic) CGFloat friction;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource;
 

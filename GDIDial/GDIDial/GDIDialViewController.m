@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GDIMath.h"
 
+#define kDefaultFriction .95f
+#define kAnimationInterval 1.f/60.f
 
 @interface GDIDialViewController()
 
@@ -61,6 +63,7 @@
 @synthesize dataSource = _dataSource;
 @synthesize delegate = _delegate;
 @synthesize currentIndex = _currentIndex;
+@synthesize friction = _friction;
 
 @synthesize rotatingSlicesContainerView = _rotatingSlicesContainerView;
 @synthesize rotatingDialContainerView = _rotatingDialContainerView;
@@ -87,6 +90,7 @@
         _dataSource = dataSource;
         _dialPosition = GDIDialPositionBottom;
         _dialRadius = 160.f;
+        _friction = kDefaultFriction;
     }
     return self;
 }
@@ -335,25 +339,23 @@
 - (void)beginNearestSliceRotation
 {
     [_rotateToSliceTimer invalidate];
-    _rotateToSliceTimer = [NSTimer scheduledTimerWithTimeInterval:.016666f target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
+    _rotateToSliceTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
 }
 
 - (void)endNearestSliceRotation
 {
-    NSLog(@"endNearestSliceRotation");
     [_rotateToSliceTimer invalidate];
     _rotateToSliceTimer = nil;
-    
-    [self rotateDialByRadians:_targetRotation - _currentRotation];
 }
 
 
 - (void)handleRotateToSliceTimer 
 {
-    CGFloat delta = (_targetRotation - _currentRotation) * (1 - kFriction);
+    CGFloat delta = (_targetRotation - _currentRotation) * (1 - _friction);
     [self rotateDialByRadians:delta];
     
     if (fabsf(delta) < .0001) {
+        [self rotateDialByRadians:_targetRotation - _currentRotation];
         [self endNearestSliceRotation];
     }
 }
@@ -456,14 +458,12 @@
 {
 //    NSLog(@"begin deceleration with velocity: %.2f", _velocity);
     [_decelerationTimer invalidate];
-    _decelerationTimer = [NSTimer scheduledTimerWithTimeInterval:kDecelerationInterval target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
+    _decelerationTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
 }
 
 
 - (void)endDeceleration
 {
-//    NSLog(@"stop deceleration");
-    
     [_decelerationTimer invalidate];
     self.decelerationTimer = nil;
     
@@ -473,7 +473,7 @@
 
 - (void)handleDecelerateTick 
 {
-    _velocity *= kFriction;
+    _velocity *= _friction;
     
     if ( fabsf(_velocity) < .001f) {
         [self endDeceleration];
