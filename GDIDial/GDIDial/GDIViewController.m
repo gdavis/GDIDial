@@ -95,6 +95,8 @@
     
     GDIDialSlice *slice = [[GDIDialSlice alloc] initWithRadius:kDialRadius width:width];
     
+//    slice.backgroundLayer.lineWidth = 1.f;
+//    slice.backgroundLayer.strokeColor = [[UIColor redColor] CGColor];
     slice.backgroundLayer.fillColor = [[self randomColor] CGColor];
 
     slice.label.radius = kDialRadius - 12;

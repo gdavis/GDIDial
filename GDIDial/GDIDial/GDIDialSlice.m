@@ -39,12 +39,10 @@
         CGPathAddLineToPoint(slicePath, NULL, 0, 0);
         CGPathCloseSubpath(slicePath);
         _backgroundLayer.path = slicePath;
-        _backgroundLayer.lineWidth = 1.f;
-        _backgroundLayer.strokeColor = [[UIColor redColor] CGColor];
         CGPathRelease(slicePath);
-        
         [self.layer addSublayer:_backgroundLayer];
         
+        // create content layer which is rotated  in order to center content within the slice.
         _contentView = [[UIView alloc] initWithFrame:CGRectZero];
         _contentView.clipsToBounds = NO;
         _contentView.transform = CGAffineTransformMakeRotation([self sizeInRadians] * .5);
