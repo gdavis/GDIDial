@@ -9,8 +9,10 @@
 #import "GDIViewController.h"
 #import "GDICurvedLabel.h"
 #import "GrillGuideDialSlice.h"
+#import "GDIMath.h"
 
 #define kDialRadius 241.f
+#define kDialSlicePadding 25.f
 
 @implementation GDIViewController
 @synthesize currentSliceLabel = _currentSliceLabel;
@@ -101,17 +103,27 @@
 }
 
 - (GDIDialSlice *)viewForDialSliceAtIndex:(NSUInteger)index
-{
-    CGFloat width = ((rand() % 50) - 25.f) + 200.f;
+{    
+    NSString *sliceLabel = [[NSString stringWithFormat:@"Dial Slice %i", index] uppercaseString];
+    UIFont *font = [UIFont boldSystemFontOfSize:18.f];
     
-    GrillGuideDialSlice *slice = [[GrillGuideDialSlice alloc] initWithRadius:kDialRadius width:width];
+    // here we calculate how big the slice will be with the given text. we use the convenience method on the GDICurvedLabel
+    // to get how many radians it takes to draw that text with that font at the given radius, 
+    // create two points for the two corners of the triangle for the given arc the text will sit on, 
+    // measure the distance between them, and use that as our slice width plus a little extra padding to give the slices some room.
+    CGPoint rightCornerPoint = cartesianCoordinateFromPolar(kDialRadius-12, 0);
+    CGPoint leftCornerPoint = cartesianCoordinateFromPolar(kDialRadius-12, [GDICurvedLabel sizeInRadiansOfText:sliceLabel font:font radius:kDialRadius-12]);
+    CGFloat dist = fabsf(distance(rightCornerPoint.x, rightCornerPoint.y, leftCornerPoint.x, leftCornerPoint.y));
+    
+    GrillGuideDialSlice *slice = [[GrillGuideDialSlice alloc] initWithRadius:kDialRadius width:dist+kDialSlicePadding*2];
     
 //    slice.backgroundLayer.lineWidth = 1.f;
 //    slice.backgroundLayer.strokeColor = [[UIColor redColor] CGColor];
 //    slice.backgroundLayer.fillColor = [[self randomColor] CGColor];
 
     slice.label.radius = kDialRadius - 12;
-    slice.label.text = [[NSString stringWithFormat:@"Dial Slice %i", index] uppercaseString];
+    slice.label.text = sliceLabel;
+    slice.label.font = font;
     
     return slice;
 }

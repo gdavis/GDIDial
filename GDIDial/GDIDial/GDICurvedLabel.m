@@ -10,13 +10,6 @@
 #import "GDIMath.h"
 
 
-@interface GDICurvedLabel()
-
-- (CGFloat)textSizeInRadians;
-
-@end
-
-
 @implementation GDICurvedLabel
 @synthesize radius = _radius;
 @synthesize radians = _radians;
@@ -72,7 +65,7 @@
     }
     
     // this line figures out the starting angle for the text
-    CGFloat dr = -M_PI*.5 + (_radians * .5 - [self textSizeInRadians] * .5);
+    CGFloat dr = -M_PI*.5 + (_radians * .5 - [GDICurvedLabel sizeInRadiansOfText:self.text font:self.font radius:_radius] * .5);
     
     for (NSString *string in textCharacters) {
         
@@ -91,12 +84,12 @@
 }
 
 
-- (CGFloat)textSizeInRadians
++ (CGFloat)sizeInRadiansOfText:(NSString *)text font:(UIFont *)font radius:(CGFloat)radius
 {
     // break the characters into an array so we can draw each character
-    NSMutableArray *textCharacters = [NSMutableArray arrayWithCapacity:[self.text length]];
-    for (int i=0; i<[self.text length]; i++) {
-        [textCharacters addObject: [self.text substringWithRange:NSMakeRange(i, 1)]];
+    NSMutableArray *textCharacters = [NSMutableArray arrayWithCapacity:[text length]];
+    for (int i=0; i<[text length]; i++) {
+        [textCharacters addObject: [text substringWithRange:NSMakeRange(i, 1)]];
     }
     
     CGFloat dr = 0.f;
@@ -104,8 +97,8 @@
     for (int i=0; i<[textCharacters count]; i++) {
         
         NSString *string = [textCharacters objectAtIndex:i];
-        CGSize characterSize = [string sizeWithFont:self.font];
-        CGFloat rotation = ( characterSize.width + self.font.pointSize * .05) / (_radius + self.font.descender);
+        CGSize characterSize = [string sizeWithFont:font];
+        CGFloat rotation = ( characterSize.width + font.pointSize * .05) / (radius + font.descender);
         
         dr += rotation;
     }

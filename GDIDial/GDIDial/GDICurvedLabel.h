@@ -17,4 +17,6 @@
 @property(nonatomic) CGFloat shadowBlur;
 @property(nonatomic) CGPoint origin;
 
++ (CGFloat)sizeInRadiansOfText:(NSString *)text font:(UIFont *)font radius:(CGFloat)radius;
+
 @end
