@@ -50,9 +50,10 @@
 - (void)beginNearestSliceRotation;
 - (void)endNearestSliceRotation;
 
-- (void)rotateToNearestSlice;
+- (void)rotateToNearestSliceWithAnimation:(BOOL)animate;
 - (void)rotateDialByRadians:(CGFloat)radians;
 
+- (CGFloat)normalizeRotation:(CGFloat)radians;
 - (CGPoint)normalizedPoint:(CGPoint)point inView:(UIView *)view;
 - (void)trackTouchPoint:(CGPoint)point inView:(UIView*)view;
 - (NSUInteger)indexForNearestSelectedSlice;
@@ -147,6 +148,7 @@
     [self buildVisibleSlices];
     [self setInitialStartingPosition];
     [self initializeDialPoint];
+    [self rotateToNearestSliceWithAnimation:NO];
 }
 
 
@@ -314,15 +316,7 @@
 - (void)rotateDialByRadians:(CGFloat)radians
 {    
     _currentRotation += radians;
-    
-    if (fabsf(_currentRotation) > M_PI * 2) {
-       if (_currentRotation < 0) {
-           _currentRotation += M_PI*2;
-       }
-       else {
-           _currentRotation -= M_PI*2;
-        }
-    }
+    _currentRotation = [self normalizeRotation:_currentRotation];
     
     NSArray *slices = _rotatingSlicesContainerView.subviews;
     for (GDIDialSlice *slice in slices) {
@@ -367,10 +361,12 @@
     
     if ( firstSliceLeftSideRadians < 0 ) {
         [self addFirstSlice];
+        [self updateVisibleSlices];
     }
     
     else if ( firstSliceRightSideRadians > 0 ) {
         [self removeFirstSlice];
+        [self updateVisibleSlices];
     }
     
     
@@ -382,13 +378,13 @@
     
     if ( lastSliceLeftSideRadians > visibleDistance && lastSliceRightSideRadians > visibleDistance) {
         [self addEndSlice];
+        [self updateVisibleSlices];
     }
     
     if ( lastSliceRightSideRadians < visibleDistance && lastSliceLeftSideRadians < visibleDistance ) {
         [self removeEndSlice];
+        [self updateVisibleSlices];
     }
-    
-//    NSLog(@"current rotation radians: %.2f, degrees: %2.f", _currentRotation, radiansToDegrees(_currentRotation));
 }
 
 
@@ -425,11 +421,23 @@
     return CGPointMake(point.x - view.bounds.size.width * .5, point.y - view.bounds.size.height * .5);
 }
 
-
+// this clamps a rotation value so that it does not exceed PI, either negative or position.
+// it will instead return the "short path". e.g. a rotation value of 7.28 would instead be 1.
+- (CGFloat)normalizeRotation:(CGFloat)radians
+{
+    if (fabsf(radians) > M_PI * 2) {
+        if (radians < 0) {
+            radians += M_PI*2;
+        }
+        else {
+            radians -= M_PI*2;
+        }
+    }
+    return radians;
+}
 
 - (void)beginDeceleration
 {
-//    NSLog(@"begin deceleration with velocity: %.2f", _velocity);
     [_decelerationTimer invalidate];
     _decelerationTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
 }
@@ -450,16 +458,14 @@
     
     if ( fabsf(_velocity) < .001f) {
         [self endDeceleration];
-        [self rotateToNearestSlice];
+        [self rotateToNearestSliceWithAnimation:YES];
     }
     else {
         [self rotateDialByRadians:_velocity];
     }
 }
 
-
-
-- (void)rotateToNearestSlice
+- (void)rotateToNearestSliceWithAnimation:(BOOL)animate
 {
     CGFloat closestDistance = FLT_MAX;
     NSUInteger sliceIndex = 0;
@@ -477,6 +483,9 @@
             _targetRotation = _currentRotation + dist;
         }
     }
+
+    // normalize rotation so we don't get crazy large or small values
+    _targetRotation = [self normalizeRotation:_targetRotation];
     
     // determine the current index of the selected slice
     _currentIndex = _indexOfFirstSlice + sliceIndex;
@@ -490,7 +499,12 @@
         [_delegate dialViewController:self didSelectIndex:_currentIndex];
     }
     
-    [self beginNearestSliceRotation];
+    if (animate) {
+        [self beginNearestSliceRotation];
+    }
+    else {
+        [self rotateDialByRadians:_targetRotation - _currentRotation];
+    }
 }
 
 
@@ -511,11 +525,13 @@
 - (void)handleRotateToSliceTimer 
 {
     CGFloat delta = (_targetRotation - _currentRotation) * (1 - _friction);
-    [self rotateDialByRadians:delta];
     
     if (fabsf(delta) < .0001) {
         [self rotateDialByRadians:_targetRotation - _currentRotation];
         [self endNearestSliceRotation];
+    }
+    else {
+        [self rotateDialByRadians:delta];
     }
 }
 
@@ -544,8 +560,6 @@
 
 - (void)gestureView:(GDIDialGestureView *)gv touchBeganAtPoint:(CGPoint)point
 {
-//    NSLog(@"gestureView:touchBeganAtPoint: %@", NSStringFromCGPoint(point));
-    
     // reset the last point to where we start from.
     _lastPoint = [self normalizedPoint:point inView:gv];
     
@@ -557,15 +571,12 @@
 
 - (void)gestureView:(GDIDialGestureView *)gv touchMovedToPoint:(CGPoint)point
 {
-//    NSLog(@"gestureView:touchMovedToPoint: %@", NSStringFromCGPoint(point));    
-    
     [self trackTouchPoint:point inView:gv];
 }
 
 
 - (void)gestureView:(GDIDialGestureView *)gv touchEndedAtPoint:(CGPoint)point
 {
-//    NSLog(@"gestureView:touchEndedAtPoint: %@", NSStringFromCGPoint(point));
     [self beginDeceleration];
 }
 
