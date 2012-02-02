@@ -15,7 +15,7 @@
 @synthesize rotation = _rotation;
 @synthesize backgroundLayer = _backgroundLayer;
 @synthesize contentView = _contentView;
-
+@synthesize label = _label;
 
 - (id)initWithRadius:(CGFloat)r width:(CGFloat)width
 {
@@ -23,6 +23,8 @@
     if (self) {
         _radius = r;
         _width = width;
+        
+        self.opaque = NO;
         
         // create a layer slice which represents the physical shape of the slice
         _backgroundLayer = [CAShapeLayer layer];
@@ -49,7 +51,15 @@
         [self addSubview:_contentView];
         self.contentView.backgroundColor = [UIColor redColor];
         
-        self.opaque = NO;
+        // create label
+        _label = [[GDICurvedLabel alloc] initWithRadius:_radius origin:CGPointZero sizeInRadians:[self sizeInRadians]];
+        _label.backgroundColor = [UIColor clearColor];
+        _label.textColor = [UIColor whiteColor];
+        _label.shadowColor = [UIColor blackColor];
+        _label.shadowOffset = CGSizeMake(1, 1);
+        _label.font = [UIFont boldSystemFontOfSize:18.f];
+        _label.opaque = NO;
+        [self.contentView addSubview:_label];
     }
     return self;
 }

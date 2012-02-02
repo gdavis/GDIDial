@@ -12,7 +12,7 @@
 
 @interface GDICurvedLabel()
 
-- (CGFloat)radiansForText;
+- (CGFloat)textSizeInRadians;
 
 @end
 
@@ -21,16 +21,25 @@
 @synthesize radius = _radius;
 @synthesize radians = _radians;
 @synthesize shadowBlur = _shadowBlur;
+@synthesize origin = _origin;
 
 - (id)initWithRadius:(CGFloat)radius origin:(CGPoint)originPoint sizeInRadians:(CGFloat)radians
 {
     self = [super initWithFrame:CGRectMake(originPoint.x, originPoint.y, radius, radius)];
     if (self) {
+        _origin = originPoint;
         _radius = radius;
         _radians = radians;
         self.backgroundColor = [UIColor colorWithRed:1.f green:0.f blue:1.f alpha:.5f];
     }
     return self;
+}
+
+- (void)setRadius:(CGFloat)radius
+{
+    _radius = radius;
+    self.frame = CGRectMake(_origin.x, _origin.y, radius, radius);
+    [self setNeedsDisplay];
 }
 
 - (void)drawTextInRect:(CGRect)rect
@@ -62,12 +71,8 @@
         [textCharacters addObject: [self.text substringWithRange:NSMakeRange(i, 1)]];
     }
     
-    CGFloat textSizeInRadians = [self radiansForText];
-    
-    
-    CGFloat dr = -M_PI*.5 + (_radians * .5 - textSizeInRadians * .5);
-    
-    NSLog(@"radiansForText: %.3f", [self radiansForText]);
+    // this line figures out the starting angle for the text
+    CGFloat dr = -M_PI*.5 + (_radians * .5 - [self textSizeInRadians] * .5);
     
     for (NSString *string in textCharacters) {
         
@@ -86,7 +91,7 @@
 }
 
 
-- (CGFloat)radiansForText
+- (CGFloat)textSizeInRadians
 {
     // break the characters into an array so we can draw each character
     NSMutableArray *textCharacters = [NSMutableArray arrayWithCapacity:[self.text length]];

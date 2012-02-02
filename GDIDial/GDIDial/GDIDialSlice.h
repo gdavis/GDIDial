@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "GDICurvedLabel.h"
 
 @interface GDIDialSlice : UIView
 
@@ -18,6 +19,7 @@
 @property(nonatomic) CGFloat rotation;
 @property(strong,nonatomic,readonly) CAShapeLayer *backgroundLayer;
 @property(strong,nonatomic,readonly) UIView *contentView;
+@property(strong,nonatomic,readonly) GDICurvedLabel *label;
 
 - (CGFloat)sizeInRadians;
 

@@ -12,8 +12,9 @@
 
 - (id)initWithRadius:(CGFloat)radius origin:(CGPoint)originPoint sizeInRadians:(CGFloat)radians;
 
-@property(nonatomic,readonly) CGFloat radius;
+@property(nonatomic) CGFloat radius;
 @property(nonatomic,readonly) CGFloat radians;
 @property(nonatomic) CGFloat shadowBlur;
+@property(nonatomic) CGPoint origin;
 
 @end
