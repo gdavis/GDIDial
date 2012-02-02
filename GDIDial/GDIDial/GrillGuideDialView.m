@@ -27,7 +27,7 @@
     CGContextSetLineWidth(context, 1.f);    
     
     // draw outer ticks
-    CGFloat tickAngle = degreesToRadians(4);
+    CGFloat tickAngle = degreesToRadians(3);
     int numTicks = (M_PI*2)/tickAngle;
     CGFloat currentAngle = 0;
     CGFloat radius = self.frame.size.width*.5;
