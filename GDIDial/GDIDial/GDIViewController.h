@@ -16,5 +16,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *currentSliceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *selectedSliceLabel;
+@property (weak, nonatomic) IBOutlet UIView *dialContainerView;
 
 @end

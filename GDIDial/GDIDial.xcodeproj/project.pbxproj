@@ -25,6 +25,12 @@
 		77B2D35A14D9CE2200ABB176 /* dial-registration.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D35814D9CE2100ABB176 /* dial-registration.png */; };
 		77B2D35B14D9CE2200ABB176 /* dial-registration@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */; };
 		77B2D36014D9E2D300ABB176 /* GDICurvedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D35F14D9E2D300ABB176 /* GDICurvedLabel.m */; };
+		77EFF64814DB134E00AAE692 /* GrillGuideDialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77EFF64714DB134E00AAE692 /* GrillGuideDialView.m */; };
+		77EFF64B14DB21AC00AAE692 /* GrillGuideDialSlice.m in Sources */ = {isa = PBXBuildFile; fileRef = 77EFF64A14DB21AC00AAE692 /* GrillGuideDialSlice.m */; };
+		77EFF64F14DB28AD00AAE692 /* grill-guide-drawer.png in Resources */ = {isa = PBXBuildFile; fileRef = 77EFF64D14DB28AD00AAE692 /* grill-guide-drawer.png */; };
+		77EFF65014DB28AD00AAE692 /* grill-guide-drawer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77EFF64E14DB28AD00AAE692 /* grill-guide-drawer@2x.png */; };
+		77EFF65314DB2B5100AAE692 /* grill-guide-dial-top-grad.png in Resources */ = {isa = PBXBuildFile; fileRef = 77EFF65114DB2B5100AAE692 /* grill-guide-dial-top-grad.png */; };
+		77EFF65414DB2B5100AAE692 /* grill-guide-dial-top-grad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77EFF65214DB2B5100AAE692 /* grill-guide-dial-top-grad@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +62,14 @@
 		77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-registration@2x.png"; sourceTree = "<group>"; };
 		77B2D35E14D9E2D300ABB176 /* GDICurvedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDICurvedLabel.h; sourceTree = "<group>"; };
 		77B2D35F14D9E2D300ABB176 /* GDICurvedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDICurvedLabel.m; sourceTree = "<group>"; };
+		77EFF64614DB134E00AAE692 /* GrillGuideDialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrillGuideDialView.h; sourceTree = "<group>"; };
+		77EFF64714DB134E00AAE692 /* GrillGuideDialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrillGuideDialView.m; sourceTree = "<group>"; };
+		77EFF64914DB21AC00AAE692 /* GrillGuideDialSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrillGuideDialSlice.h; sourceTree = "<group>"; };
+		77EFF64A14DB21AC00AAE692 /* GrillGuideDialSlice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrillGuideDialSlice.m; sourceTree = "<group>"; };
+		77EFF64D14DB28AD00AAE692 /* grill-guide-drawer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grill-guide-drawer.png"; sourceTree = "<group>"; };
+		77EFF64E14DB28AD00AAE692 /* grill-guide-drawer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grill-guide-drawer@2x.png"; sourceTree = "<group>"; };
+		77EFF65114DB2B5100AAE692 /* grill-guide-dial-top-grad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grill-guide-dial-top-grad.png"; sourceTree = "<group>"; };
+		77EFF65214DB2B5100AAE692 /* grill-guide-dial-top-grad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grill-guide-dial-top-grad@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +118,7 @@
 		77B2D31114D6FA5700ABB176 /* GDIDial */ = {
 			isa = PBXGroup;
 			children = (
+				77EFF64414DB133C00AAE692 /* Grill Guide */,
 				77B2D32814D6FA7800ABB176 /* Dial */,
 				77B2D31A14D6FA5700ABB176 /* GDIAppDelegate.h */,
 				77B2D31B14D6FA5700ABB176 /* GDIAppDelegate.m */,
@@ -151,6 +166,29 @@
 				77B2D35814D9CE2100ABB176 /* dial-registration.png */,
 				77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */,
 				77B2D33D14D740EE00ABB176 /* dial-ring.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
+		77EFF64414DB133C00AAE692 /* Grill Guide */ = {
+			isa = PBXGroup;
+			children = (
+				77EFF64C14DB28A300AAE692 /* images */,
+				77EFF64614DB134E00AAE692 /* GrillGuideDialView.h */,
+				77EFF64714DB134E00AAE692 /* GrillGuideDialView.m */,
+				77EFF64914DB21AC00AAE692 /* GrillGuideDialSlice.h */,
+				77EFF64A14DB21AC00AAE692 /* GrillGuideDialSlice.m */,
+			);
+			name = "Grill Guide";
+			sourceTree = "<group>";
+		};
+		77EFF64C14DB28A300AAE692 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				77EFF65114DB2B5100AAE692 /* grill-guide-dial-top-grad.png */,
+				77EFF65214DB2B5100AAE692 /* grill-guide-dial-top-grad@2x.png */,
+				77EFF64D14DB28AD00AAE692 /* grill-guide-drawer.png */,
+				77EFF64E14DB28AD00AAE692 /* grill-guide-drawer@2x.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -211,6 +249,10 @@
 				77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */,
 				77B2D35A14D9CE2200ABB176 /* dial-registration.png in Resources */,
 				77B2D35B14D9CE2200ABB176 /* dial-registration@2x.png in Resources */,
+				77EFF64F14DB28AD00AAE692 /* grill-guide-drawer.png in Resources */,
+				77EFF65014DB28AD00AAE692 /* grill-guide-drawer@2x.png in Resources */,
+				77EFF65314DB2B5100AAE692 /* grill-guide-dial-top-grad.png in Resources */,
+				77EFF65414DB2B5100AAE692 /* grill-guide-dial-top-grad@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +271,8 @@
 				77B2D33014D6FE2600ABB176 /* GDIDialSlice.m in Sources */,
 				77B2D33514D7056F00ABB176 /* GDIDialGestureView.m in Sources */,
 				77B2D36014D9E2D300ABB176 /* GDICurvedLabel.m in Sources */,
+				77EFF64814DB134E00AAE692 /* GrillGuideDialView.m in Sources */,
+				77EFF64B14DB21AC00AAE692 /* GrillGuideDialSlice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

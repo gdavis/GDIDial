@@ -28,6 +28,7 @@
         
         // create a layer slice which represents the physical shape of the slice
         _backgroundLayer = [CAShapeLayer layer];
+        _backgroundLayer.fillColor = [[UIColor clearColor] CGColor];
         
         CGFloat radiansOffset = degreesToRadians(90);
         CGPoint botRightCorner = cartesianCoordinateFromPolar(_radius, (-width*.5 / _radius) + radiansOffset );        
