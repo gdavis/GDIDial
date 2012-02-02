@@ -129,10 +129,7 @@
 		77B2D32814D6FA7800ABB176 /* Dial */ = {
 			isa = PBXGroup;
 			children = (
-				77B2D35D14D9E2A900ABB176 /* Text */,
-				77B2D35814D9CE2100ABB176 /* dial-registration.png */,
-				77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */,
-				77B2D33D14D740EE00ABB176 /* dial-ring.png */,
+				77B2D36514DA164300ABB176 /* images */,
 				77B2D32914D6FA9200ABB176 /* GDIDialViewController.h */,
 				77B2D32A14D6FA9200ABB176 /* GDIDialViewController.m */,
 				77B2D32B14D6FA9200ABB176 /* GDIDialView.xib */,
@@ -140,19 +137,22 @@
 				77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */,
 				77B2D32E14D6FE2600ABB176 /* GDIDialSlice.h */,
 				77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */,
+				77B2D35E14D9E2D300ABB176 /* GDICurvedLabel.h */,
+				77B2D35F14D9E2D300ABB176 /* GDICurvedLabel.m */,
 				77B2D33B14D7130700ABB176 /* GDIMath.h */,
 				77B2D33A14D70A6200ABB176 /* GDIMath.m */,
 			);
 			name = Dial;
 			sourceTree = "<group>";
 		};
-		77B2D35D14D9E2A900ABB176 /* Text */ = {
+		77B2D36514DA164300ABB176 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				77B2D35E14D9E2D300ABB176 /* GDICurvedLabel.h */,
-				77B2D35F14D9E2D300ABB176 /* GDICurvedLabel.m */,
+				77B2D35814D9CE2100ABB176 /* dial-registration.png */,
+				77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */,
+				77B2D33D14D740EE00ABB176 /* dial-ring.png */,
 			);
-			name = Text;
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
