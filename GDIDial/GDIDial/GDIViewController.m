@@ -12,6 +12,8 @@
 #define kDialRadius 160.f
 
 @implementation GDIViewController
+@synthesize currentSliceLabel = _currentSliceLabel;
+@synthesize selectedSliceLabel = _selectedSliceLabel;
 @synthesize dataItems = _dataItems;
 
 - (void)didReceiveMemoryWarning
@@ -32,11 +34,13 @@
     dialViewController.dialRadius = kDialRadius;
     dialViewController.dialPosition = GDIDialPositionBottom;
     dialViewController.dialRegistrationViewRadius = 110.f;
-    [self.view addSubview:dialViewController.view];
+    [self.view insertSubview:dialViewController.view atIndex:0];
 }
 
 - (void)viewDidUnload
 {
+    [self setCurrentSliceLabel:nil];
+    [self setSelectedSliceLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -73,12 +77,14 @@
 
 - (void)dialViewController:(GDIDialViewController *)dialVC didRotateToIndex:(NSUInteger)index
 {
-    NSLog(@"%@ did rotate to index: %i", dialVC, index); 
+//    NSLog(@"%@ did rotate to index: %i", dialVC, index); 
+    self.currentSliceLabel.text = [NSString stringWithFormat:@"Current slice index: %i", index];
 }
 
 - (void)dialViewController:(GDIDialViewController *)dialVC didSelectIndex:(NSUInteger)selectedIndex
 {
-    NSLog(@"%@ did select index: %i", dialVC, selectedIndex);
+//    NSLog(@"%@ did select index: %i", dialVC, selectedIndex);
+    self.selectedSliceLabel.text = [NSString stringWithFormat:@"Selected slice index: %i", selectedIndex];
 }
 
 

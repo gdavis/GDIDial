@@ -14,4 +14,7 @@
 @property(strong,nonatomic) NSArray *dataItems;
 - (UIColor *)randomColor;
 
+@property (weak, nonatomic) IBOutlet UILabel *currentSliceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *selectedSliceLabel;
+
 @end
