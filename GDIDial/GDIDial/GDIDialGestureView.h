@@ -13,9 +13,6 @@
 @interface GDIDialGestureView : UIView
 
 @property(strong,nonatomic) NSObject<GDIDialGestureViewDelegate> *delegate;
-@property(nonatomic) CGFloat dialRadius;
-
-- (id)initWithFrame:(CGRect)frame dialRadius:(CGFloat)radius;
 
 @end
 

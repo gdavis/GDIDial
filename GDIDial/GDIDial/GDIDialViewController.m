@@ -141,7 +141,7 @@
     // create a custom gesture view which tells us when there are touches on the dial
     CGRect gestureViewFrame = CGRectMake(0, 0, self.rotatingDialView.frame.size.width, self.rotatingDialView.frame.size.height);
     
-    _gestureView = [[GDIDialGestureView alloc] initWithFrame:gestureViewFrame dialRadius:_dialRadius];
+    _gestureView = [[GDIDialGestureView alloc] initWithFrame:gestureViewFrame];
     _gestureView.delegate = self;
     [self.view addSubview:_gestureView];
     
