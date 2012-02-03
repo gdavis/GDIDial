@@ -526,7 +526,8 @@
 
 - (void)handleRotateToSliceTimer 
 {
-    // determine the shortest route rotate
+    // determine the shortest rotation direction. this fixes and issue when
+    // the rotation might be beyond +/- M_PI*2.
     CGFloat delta1 = (_targetRotation - _currentRotation);
     CGFloat delta2 = (_targetRotation - _currentRotation) + M_PI*2;
     CGFloat delta;
