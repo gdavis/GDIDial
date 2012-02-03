@@ -141,8 +141,6 @@
     // create a custom gesture view which tells us when there are touches on the dial
     CGRect gestureViewFrame = CGRectMake(0, 0, self.rotatingDialView.frame.size.width, self.rotatingDialView.frame.size.height);
     
-//    CGRect gestureViewFrame = CGRectMake(0, 0, _dialRadius*2, _dialRadius*2);
-    
     _gestureView = [[GDIDialGestureView alloc] initWithFrame:gestureViewFrame dialRadius:_dialRadius];
     _gestureView.delegate = self;
     [self.view addSubview:_gestureView];
@@ -489,6 +487,8 @@
     // normalize rotation so we don't get crazy large or small values
     _targetRotation = [self normalizeRotation:_targetRotation];
     
+    NSLog(@"rotating to nearest slice, closestDistance: %.3f, targetRotation: %.3f, currentRotation: %.3f", closestDistance, _targetRotation, _currentRotation );
+    
     // determine the current index of the selected slice
     _currentIndex = _indexOfFirstSlice + sliceIndex;
     
@@ -526,7 +526,17 @@
 
 - (void)handleRotateToSliceTimer 
 {
-    CGFloat delta = (_targetRotation - _currentRotation) * (1 - _friction);
+    // determine the shortest route rotate
+    CGFloat delta1 = (_targetRotation - _currentRotation);
+    CGFloat delta2 = (_targetRotation - _currentRotation) + M_PI*2;
+    CGFloat delta;
+    
+    if (fabsf(delta1) < fabsf(delta2)) {
+        delta = delta1 * (1 - _friction);
+    }
+    else {
+        delta = delta2 * (1 - _friction);
+    }
     
     if (fabsf(delta) < .0001) {
         [self rotateDialByRadians:_targetRotation - _currentRotation];
