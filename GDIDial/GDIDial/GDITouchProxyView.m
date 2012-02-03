@@ -7,9 +7,6 @@
 //
 
 #import "GDITouchProxyView.h"
-#import <QuartzCore/QuartzCore.h>
-#import "GDIMath.h"
-
 
 @implementation GDITouchProxyView
 @synthesize delegate = _delegate;
