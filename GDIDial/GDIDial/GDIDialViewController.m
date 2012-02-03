@@ -141,7 +141,7 @@
     // create a custom gesture view which tells us when there are touches on the dial
     CGRect gestureViewFrame = CGRectMake(0, 0, self.rotatingDialView.frame.size.width, self.rotatingDialView.frame.size.height);
     
-    _gestureView = [[GDIDialGestureView alloc] initWithFrame:gestureViewFrame];
+    _gestureView = [[GDITouchProxyView alloc] initWithFrame:gestureViewFrame];
     _gestureView.delegate = self;
     [self.view addSubview:_gestureView];
     
@@ -571,7 +571,7 @@
 #pragma mark - Gesture View Delegate
 
 
-- (void)gestureView:(GDIDialGestureView *)gv touchBeganAtPoint:(CGPoint)point
+- (void)gestureView:(GDITouchProxyView *)gv touchBeganAtPoint:(CGPoint)point
 {
     // reset the last point to where we start from.
     _lastPoint = [self normalizedPoint:point inView:gv];
@@ -582,13 +582,13 @@
 }
 
 
-- (void)gestureView:(GDIDialGestureView *)gv touchMovedToPoint:(CGPoint)point
+- (void)gestureView:(GDITouchProxyView *)gv touchMovedToPoint:(CGPoint)point
 {
     [self trackTouchPoint:point inView:gv];
 }
 
 
-- (void)gestureView:(GDIDialGestureView *)gv touchEndedAtPoint:(CGPoint)point
+- (void)gestureView:(GDITouchProxyView *)gv touchEndedAtPoint:(CGPoint)point
 {
     [self beginDeceleration];
 }

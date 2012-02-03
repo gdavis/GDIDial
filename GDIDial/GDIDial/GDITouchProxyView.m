@@ -1,23 +1,17 @@
 //
-//  GDIDialGestureView.m
+//  GDITouchProxyViewView.m
 //  GDIDial
 //
 //  Created by Grant Davis on 1/30/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "GDIDialGestureView.h"
+#import "GDITouchProxyView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GDIMath.h"
 
 
-@interface GDIDialGestureView()
-//- (void)buildDialArea;
-//CGPoint cartesianCoordinateFromPolar(float radius, float radians);
-@end
-
-
-@implementation GDIDialGestureView
+@implementation GDITouchProxyView
 @synthesize delegate = _delegate;
 
 #pragma mark - Touch Handling

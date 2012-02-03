@@ -19,7 +19,7 @@
 		77B2D32D14D6FA9200ABB176 /* GDIDialView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D32B14D6FA9200ABB176 /* GDIDialView.xib */; };
 		77B2D33014D6FE2600ABB176 /* GDIDialSlice.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */; };
 		77B2D33214D6FF3000ABB176 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77B2D33114D6FF3000ABB176 /* QuartzCore.framework */; };
-		77B2D33514D7056F00ABB176 /* GDIDialGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */; };
+		77B2D33514D7056F00ABB176 /* GDITouchProxyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33414D7056F00ABB176 /* GDITouchProxyView.m */; };
 		77B2D33C14D7295B00ABB176 /* GDIMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33A14D70A6200ABB176 /* GDIMath.m */; };
 		77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D33D14D740EE00ABB176 /* dial-ring.png */; };
 		77B2D35A14D9CE2200ABB176 /* dial-registration.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D35814D9CE2100ABB176 /* dial-registration.png */; };
@@ -53,8 +53,8 @@
 		77B2D32E14D6FE2600ABB176 /* GDIDialSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIDialSlice.h; sourceTree = "<group>"; };
 		77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIDialSlice.m; sourceTree = "<group>"; };
 		77B2D33114D6FF3000ABB176 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		77B2D33314D7056F00ABB176 /* GDIDialGestureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIDialGestureView.h; sourceTree = "<group>"; };
-		77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIDialGestureView.m; sourceTree = "<group>"; };
+		77B2D33314D7056F00ABB176 /* GDITouchProxyView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = GDITouchProxyView.h; sourceTree = "<group>"; };
+		77B2D33414D7056F00ABB176 /* GDITouchProxyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDITouchProxyView.m; sourceTree = "<group>"; };
 		77B2D33A14D70A6200ABB176 /* GDIMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIMath.m; sourceTree = "<group>"; };
 		77B2D33B14D7130700ABB176 /* GDIMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIMath.h; sourceTree = "<group>"; };
 		77B2D33D14D740EE00ABB176 /* dial-ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-ring.png"; sourceTree = "<group>"; };
@@ -148,8 +148,8 @@
 				77B2D32914D6FA9200ABB176 /* GDIDialViewController.h */,
 				77B2D32A14D6FA9200ABB176 /* GDIDialViewController.m */,
 				77B2D32B14D6FA9200ABB176 /* GDIDialView.xib */,
-				77B2D33314D7056F00ABB176 /* GDIDialGestureView.h */,
-				77B2D33414D7056F00ABB176 /* GDIDialGestureView.m */,
+				77B2D33314D7056F00ABB176 /* GDITouchProxyView.h */,
+				77B2D33414D7056F00ABB176 /* GDITouchProxyView.m */,
 				77B2D32E14D6FE2600ABB176 /* GDIDialSlice.h */,
 				77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */,
 				77B2D35E14D9E2D300ABB176 /* GDICurvedLabel.h */,
@@ -269,7 +269,7 @@
 				77B2D31F14D6FA5700ABB176 /* GDIViewController.m in Sources */,
 				77B2D32C14D6FA9200ABB176 /* GDIDialViewController.m in Sources */,
 				77B2D33014D6FE2600ABB176 /* GDIDialSlice.m in Sources */,
-				77B2D33514D7056F00ABB176 /* GDIDialGestureView.m in Sources */,
+				77B2D33514D7056F00ABB176 /* GDITouchProxyView.m in Sources */,
 				77B2D36014D9E2D300ABB176 /* GDICurvedLabel.m in Sources */,
 				77EFF64814DB134E00AAE692 /* GrillGuideDialView.m in Sources */,
 				77EFF64B14DB21AC00AAE692 /* GrillGuideDialSlice.m in Sources */,

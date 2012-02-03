@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GDIDialGestureView.h"
+#import "GDITouchProxyView.h"
 #import "GDIDialSlice.h"
 
 typedef enum {
@@ -19,12 +19,12 @@ typedef enum {
 
 @protocol GDIDialViewControllerDataSource, GDIDialViewControllerDelegate;
 
-@interface GDIDialViewController : UIViewController <GDIDialGestureViewDelegate>
+@interface GDIDialViewController : UIViewController <GDITouchProxyViewDelegate>
 
 @property(strong, nonatomic) IBOutlet UIView *rotatingDialView;
 @property(strong, nonatomic) IBOutlet UIView *dialRegistrationView;
 
-@property(strong, nonatomic, readonly) GDIDialGestureView *gestureView;
+@property(strong, nonatomic, readonly) GDITouchProxyView *gestureView;
 @property(nonatomic) GDIDialPosition dialPosition;
 @property(nonatomic) CGFloat dialRadius;
 @property(nonatomic) CGFloat dialRegistrationViewRadius;
