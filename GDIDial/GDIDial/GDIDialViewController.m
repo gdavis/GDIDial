@@ -31,6 +31,10 @@
 @property(nonatomic) NSInteger indexOfFirstSlice;
 @property(nonatomic) NSInteger indexOfLastSlice;
 @property(nonatomic) NSUInteger indexOfCurrentSlice;
+@property(strong,nonatomic) NSDate *nearestSliceStartTime;
+@property(nonatomic) CGFloat nearestSliceStartValue;
+@property(nonatomic) CGFloat nearestSliceDelta;
+@property(nonatomic) CGFloat nearestSliceDuration;
 
 - (void)initializeDialPoint;
 - (void)buildVisibleSlices;
@@ -57,6 +61,8 @@
 - (CGPoint)normalizedPoint:(CGPoint)point inView:(UIView *)view;
 - (void)trackTouchPoint:(CGPoint)point inView:(UIView*)view;
 - (NSUInteger)indexForNearestSelectedSlice;
+
+- (CGFloat)easeInOutWithCurrentTime:(CGFloat)t start:(CGFloat)b change:(CGFloat)c duration:(CGFloat)d;
 
 @end
 
@@ -90,6 +96,10 @@
 @synthesize indexOfFirstSlice = _indexOfFirstSlice;
 @synthesize indexOfLastSlice = _indexOfLastSlice;
 @synthesize indexOfCurrentSlice = _indexOfCurrentSlice;
+@synthesize nearestSliceStartTime = _nearestSliceStartTime;
+@synthesize nearestSliceStartValue = _nearestSliceStartValue;
+@synthesize nearestSliceDelta = _nearestSliceDelta;
+@synthesize nearestSliceDuration = _nearestSliceDuration;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource
@@ -512,6 +522,22 @@
 
 - (void)beginNearestSliceRotation
 {
+    // determine the shortest rotation direction. this fixes and issue when
+    // the rotation might be beyond +/- M_PI*2.
+    CGFloat delta1 = (_targetRotation - _currentRotation);
+    CGFloat delta2 = (_targetRotation - _currentRotation) + M_PI*2;
+    
+    if (fabsf(delta1) < fabsf(delta2)) {
+        _nearestSliceDelta = delta1;
+    }
+    else {
+        _nearestSliceDelta = delta2;
+    }
+    
+    _nearestSliceStartValue = _currentRotation;
+    _nearestSliceStartTime = [NSDate date];
+    _nearestSliceDuration = [[_nearestSliceStartTime dateByAddingTimeInterval:1.333f] timeIntervalSinceDate:_nearestSliceStartTime];
+    
     [_rotateToSliceTimer invalidate];
     _rotateToSliceTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
 }
@@ -519,32 +545,26 @@
 
 - (void)endNearestSliceRotation
 {
+    _nearestSliceStartTime = nil;
     [_rotateToSliceTimer invalidate];
     _rotateToSliceTimer = nil;
 }
 
 
 - (void)handleRotateToSliceTimer 
-{
-    // determine the shortest rotation direction. this fixes and issue when
-    // the rotation might be beyond +/- M_PI*2.
-    CGFloat delta1 = (_targetRotation - _currentRotation);
-    CGFloat delta2 = (_targetRotation - _currentRotation) + M_PI*2;
-    CGFloat delta;
+{    
+    // see what our current duration is
+    CGFloat currentTime = fabsf([_nearestSliceStartTime timeIntervalSinceNow]);
     
-    if (fabsf(delta1) < fabsf(delta2)) {
-        delta = delta1 * (1 - _friction);
-    }
-    else {
-        delta = delta2 * (1 - _friction);
-    }
-    
-    if (fabsf(delta) < .0001) {
+    // stop scrolling if we are past our duration
+    if (currentTime >= _nearestSliceDuration) {
         [self rotateDialByRadians:_targetRotation - _currentRotation];
         [self endNearestSliceRotation];
     }
+    // otherwise, calculate how much we should be scrolling our content by with an ease function
     else {
-        [self rotateDialByRadians:delta];
+        CGFloat dy = [self easeInOutWithCurrentTime:currentTime start:_nearestSliceStartValue change:_nearestSliceDelta duration:_nearestSliceDuration];
+        [self rotateDialByRadians:dy - _currentRotation];
     }
 }
 
@@ -591,6 +611,42 @@
 - (void)gestureView:(GDITouchProxyView *)gv touchEndedAtPoint:(CGPoint)point
 {
     [self beginDeceleration];
+}
+
+#pragma mark - Easing
+
+/*
+ static function easeIn (t:Number, b:Number, c:Number, d:Number):Number {
+ return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+ }
+ static function easeOut (t:Number, b:Number, c:Number, d:Number):Number {
+ return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+ }
+ static function easeInOut (t:Number, b:Number, c:Number, d:Number):Number {
+ if (t==0) return b;
+ if (t==d) return b+c;
+ if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+ return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+ }
+ 
+ Easing equations taken with permission under the BSD license from Robert Penner.
+ 
+ Copyright © 2001 Robert Penner
+ All rights reserved.
+ */
+
+- (CGFloat)easeInOutWithCurrentTime:(CGFloat)t start:(CGFloat)b change:(CGFloat)c duration:(CGFloat)d
+{
+    if (t==0) {
+        return b;
+    }
+    if (t==d) {
+        return b+c;
+    }
+    if ((t/=d/2) < 1) {
+        return c/2 * powf(2, 10 * (t-1)) + b;
+    }
+    return c/2 * (-powf(2, -10 * --t) + 2) + b;
 }
 
 
