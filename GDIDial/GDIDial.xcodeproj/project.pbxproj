@@ -21,7 +21,6 @@
 		77B2D33214D6FF3000ABB176 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77B2D33114D6FF3000ABB176 /* QuartzCore.framework */; };
 		77B2D33514D7056F00ABB176 /* GDITouchProxyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33414D7056F00ABB176 /* GDITouchProxyView.m */; };
 		77B2D33C14D7295B00ABB176 /* GDIMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D33A14D70A6200ABB176 /* GDIMath.m */; };
-		77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D33D14D740EE00ABB176 /* dial-ring.png */; };
 		77B2D35A14D9CE2200ABB176 /* dial-registration.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D35814D9CE2100ABB176 /* dial-registration.png */; };
 		77B2D35B14D9CE2200ABB176 /* dial-registration@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */; };
 		77B2D36014D9E2D300ABB176 /* GDICurvedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B2D35F14D9E2D300ABB176 /* GDICurvedLabel.m */; };
@@ -53,11 +52,10 @@
 		77B2D32E14D6FE2600ABB176 /* GDIDialSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIDialSlice.h; sourceTree = "<group>"; };
 		77B2D32F14D6FE2600ABB176 /* GDIDialSlice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIDialSlice.m; sourceTree = "<group>"; };
 		77B2D33114D6FF3000ABB176 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		77B2D33314D7056F00ABB176 /* GDITouchProxyView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = GDITouchProxyView.h; sourceTree = "<group>"; };
+		77B2D33314D7056F00ABB176 /* GDITouchProxyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDITouchProxyView.h; sourceTree = "<group>"; };
 		77B2D33414D7056F00ABB176 /* GDITouchProxyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDITouchProxyView.m; sourceTree = "<group>"; };
 		77B2D33A14D70A6200ABB176 /* GDIMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDIMath.m; sourceTree = "<group>"; };
 		77B2D33B14D7130700ABB176 /* GDIMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDIMath.h; sourceTree = "<group>"; };
-		77B2D33D14D740EE00ABB176 /* dial-ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-ring.png"; sourceTree = "<group>"; };
 		77B2D35814D9CE2100ABB176 /* dial-registration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-registration.png"; sourceTree = "<group>"; };
 		77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dial-registration@2x.png"; sourceTree = "<group>"; };
 		77B2D35E14D9E2D300ABB176 /* GDICurvedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDICurvedLabel.h; sourceTree = "<group>"; };
@@ -118,7 +116,7 @@
 		77B2D31114D6FA5700ABB176 /* GDIDial */ = {
 			isa = PBXGroup;
 			children = (
-				77EFF64414DB133C00AAE692 /* Grill Guide */,
+				77EFF64414DB133C00AAE692 /* Grill Guide Dial */,
 				77B2D32814D6FA7800ABB176 /* Dial */,
 				77B2D31A14D6FA5700ABB176 /* GDIAppDelegate.h */,
 				77B2D31B14D6FA5700ABB176 /* GDIAppDelegate.m */,
@@ -165,12 +163,11 @@
 			children = (
 				77B2D35814D9CE2100ABB176 /* dial-registration.png */,
 				77B2D35914D9CE2200ABB176 /* dial-registration@2x.png */,
-				77B2D33D14D740EE00ABB176 /* dial-ring.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
 		};
-		77EFF64414DB133C00AAE692 /* Grill Guide */ = {
+		77EFF64414DB133C00AAE692 /* Grill Guide Dial */ = {
 			isa = PBXGroup;
 			children = (
 				77EFF64C14DB28A300AAE692 /* images */,
@@ -179,7 +176,7 @@
 				77EFF64914DB21AC00AAE692 /* GrillGuideDialSlice.h */,
 				77EFF64A14DB21AC00AAE692 /* GrillGuideDialSlice.m */,
 			);
-			name = "Grill Guide";
+			name = "Grill Guide Dial";
 			sourceTree = "<group>";
 		};
 		77EFF64C14DB28A300AAE692 /* images */ = {
@@ -246,7 +243,6 @@
 				77B2D31614D6FA5700ABB176 /* InfoPlist.strings in Resources */,
 				77B2D32214D6FA5700ABB176 /* GDIViewController.xib in Resources */,
 				77B2D32D14D6FA9200ABB176 /* GDIDialView.xib in Resources */,
-				77B2D33E14D740EE00ABB176 /* dial-ring.png in Resources */,
 				77B2D35A14D9CE2200ABB176 /* dial-registration.png in Resources */,
 				77B2D35B14D9CE2200ABB176 /* dial-registration@2x.png in Resources */,
 				77EFF64F14DB28AD00AAE692 /* grill-guide-drawer.png in Resources */,
