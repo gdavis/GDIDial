@@ -19,24 +19,9 @@
     self = [super initWithRadius:r width:width];
     if (self) {
         
-        CAShapeLayer *centerLine = [CAShapeLayer layer];
-        centerLine.strokeColor = [[UIColor colorWithWhite:1.f alpha:.75f] CGColor];
-        centerLine.lineWidth = 1.f;
-        
-        CGMutablePathRef path = CGPathCreateMutable();
-        
-        CGPathMoveToPoint(path, NULL, 0, 0);
-        CGPoint endPoint = cartesianCoordinateFromPolar(self.radius-kRadiusOffset, M_PI*.5);
-        CGPathAddLineToPoint(path, NULL, endPoint.x, endPoint.y);
-        
-        centerLine.path = path;
-        CGPathRelease(path);
-        
-        [self.layer insertSublayer:centerLine atIndex:0];
-        
         CAShapeLayer *arrow = [CAShapeLayer layer];
         arrow.fillColor = [[UIColor blackColor] CGColor];
-        path = CGPathCreateMutable();
+        CGMutablePathRef path = CGPathCreateMutable();
         
         CGPoint arrowOrigin = CGPointMake(0, self.radius-kArrowSize.height-kRadiusOffset);
         CGPathMoveToPoint(path, NULL, arrowOrigin.x, arrowOrigin.y);

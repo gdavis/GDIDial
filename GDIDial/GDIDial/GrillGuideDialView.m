@@ -33,7 +33,7 @@
     CGFloat radius = self.frame.size.width*.5;
     
     CGContextBeginPath(context);
-    for (int i=0; i<numTicks; i++) {
+    for (int i=0; i<=numTicks; i++) {
         
         CGPoint startPoint = cartesianCoordinateFromPolar(radius - kTickSize, currentAngle);
         CGPoint endPoint = cartesianCoordinateFromPolar(radius, currentAngle);
@@ -59,7 +59,7 @@
     // draw inner ticks    
     CGContextBeginPath(context);
     currentAngle = 0;
-    for (int i=0; i<numTicks; i++) {
+    for (int i=0; i<=numTicks; i++) {
 
         CGPoint startPoint = cartesianCoordinateFromPolar(radius - kRingSize - kTickSize*2, currentAngle);
         CGPoint endPoint = cartesianCoordinateFromPolar(radius - kRingSize - kTickSize, currentAngle);

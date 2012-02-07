@@ -37,10 +37,9 @@
     dialViewController.delegate = self;
     dialViewController.dialRadius = kDialRadius;
     dialViewController.dialPosition = GDIDialPositionBottom;
-    dialViewController.dialRegistrationViewRadius = 195.f;
+    dialViewController.dialRegistrationViewRadius = 183.f;
     dialViewController.view.frame = CGRectMake(self.dialContainerView.frame.size.width * .5 - kDialRadius, -kDialRadius*2 - 44.f + self.dialContainerView.frame.size.height, kDialRadius*2, kDialRadius*2);
     [self.dialContainerView addSubview:dialViewController.view];
-//    [self.view insertSubview:dialViewController.view atIndex:0];
 }
 
 - (void)viewDidUnload
