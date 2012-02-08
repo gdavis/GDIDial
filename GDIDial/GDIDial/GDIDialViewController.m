@@ -132,9 +132,6 @@
 {
     [super viewDidLoad];
     
-    // get our slice count
-    _numberOfSlices = [_dataSource numberOfSlicesForDial];
-    
     // add rotating dial view
     _rotatingDialContainerView = [[UIView alloc] initWithFrame:CGRectMake(self.view.center.x, self.view.center.y, 0, 0)];
     [self.view addSubview:_rotatingDialContainerView];
@@ -176,6 +173,21 @@
     return [NSArray arrayWithArray:_visibleSlices];
 }
 
+- (void)reloadData
+{
+    [self endDeceleration];
+    [self endNearestSliceRotation];
+    
+    _currentRotation = _initialRotation;
+    
+    for (UIView *view in _visibleSlices) {
+        [view removeFromSuperview];
+    }
+    [_visibleSlices removeAllObjects];
+    
+    [self buildVisibleSlices];
+    [self rotateToNearestSliceWithAnimation:NO];
+}
 
 #pragma mark - Private Methods
 
@@ -214,17 +226,16 @@
 
 - (void)buildVisibleSlices
 {
+    _numberOfSlices = [_dataSource numberOfSlicesForDial];
     _visibleSlices = [NSMutableArray array];
     _indexOfFirstSlice = 0;
-    
-    NSUInteger dl = _numberOfSlices;
     
     // we limit our dial to only show half of the dial at a time.
     // this allows us to have an infinite number of slices within the dial
     CGFloat maxRadians = M_PI;
     CGFloat currentRadians = 0.f;
     
-    for (int i=0; i<dl; i++) {
+    for (int i=0; i<_numberOfSlices; i++) {
         
         GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:i];
         slice.rotation = currentRadians - [slice sizeInRadians] * .5;

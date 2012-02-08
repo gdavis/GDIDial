@@ -17,5 +17,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentSliceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *selectedSliceLabel;
 @property (weak, nonatomic) IBOutlet UIView *dialContainerView;
+@property (weak, nonatomic) IBOutlet UIButton *reloadButton;
+@property (strong, nonatomic) GDIDialViewController *dialViewController;
+- (IBAction)handleReload:(id)sender;
 
 @end

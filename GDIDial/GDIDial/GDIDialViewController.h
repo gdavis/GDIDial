@@ -36,6 +36,7 @@ typedef enum {
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource;
 
 - (NSArray *)visibleSlices;
+- (void)reloadData;
 
 @end
 

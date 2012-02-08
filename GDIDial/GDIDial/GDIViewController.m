@@ -18,7 +18,9 @@
 @synthesize currentSliceLabel = _currentSliceLabel;
 @synthesize selectedSliceLabel = _selectedSliceLabel;
 @synthesize dialContainerView = _dialContainerView;
+@synthesize reloadButton = _reloadButton;
 @synthesize dataItems = _dataItems;
+@synthesize dialViewController = _dialViewController;
 
 - (void)didReceiveMemoryWarning
 {
@@ -33,13 +35,13 @@
     [super viewDidLoad];
     
     _dataItems = [NSArray arrayWithObjects:@"One", @"Two", @"Three",@"Four", nil];
-    GDIDialViewController *dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil dataSource:self];
-    dialViewController.delegate = self;
-    dialViewController.dialRadius = kDialRadius;
-    dialViewController.dialPosition = GDIDialPositionBottom;
-    dialViewController.dialRegistrationViewRadius = 183.f;
-    dialViewController.view.frame = CGRectMake(self.dialContainerView.frame.size.width * .5 - kDialRadius, -kDialRadius*2 - 44.f + self.dialContainerView.frame.size.height, kDialRadius*2, kDialRadius*2);
-    [self.dialContainerView addSubview:dialViewController.view];
+    _dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil dataSource:self];
+    _dialViewController.delegate = self;
+    _dialViewController.dialRadius = kDialRadius;
+    _dialViewController.dialPosition = GDIDialPositionBottom;
+    _dialViewController.dialRegistrationViewRadius = 183.f;
+    _dialViewController.view.frame = CGRectMake(self.dialContainerView.frame.size.width * .5 - kDialRadius, -kDialRadius*2 - 44.f + self.dialContainerView.frame.size.height, kDialRadius*2, kDialRadius*2);
+    [self.dialContainerView addSubview:_dialViewController.view];
 }
 
 - (void)viewDidUnload
@@ -47,6 +49,7 @@
     [self setCurrentSliceLabel:nil];
     [self setSelectedSliceLabel:nil];
     [self setDialContainerView:nil];
+    [self setReloadButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -135,6 +138,11 @@
     return [UIColor colorWithRed:red green:green blue:blue alpha:.5];
 }
 
+
+
+- (IBAction)handleReload:(id)sender {
+    [_dialViewController reloadData];
+}
 
 
 @end
