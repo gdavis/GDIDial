@@ -43,8 +43,8 @@ typedef enum {
 
 @protocol GDIDialViewControllerDataSource
 @required
-- (NSUInteger)numberOfSlicesForDial;
-- (GDIDialSlice *)viewForDialSliceAtIndex:(NSUInteger)index;
+- (NSUInteger)numberOfSlicesForDialViewController:(GDIDialViewController *)dialVC;
+- (GDIDialSlice *)dialViewController:(GDIDialViewController *)dialVC viewForDialSliceAtIndex:(NSUInteger)index;
 
 @end
 

@@ -37,6 +37,7 @@
 @property(nonatomic) CGFloat nearestSliceDuration;
 
 - (void)initializeDialPoint;
+- (void)initializeNumberOfSlices;
 - (void)buildVisibleSlices;
 - (void)setInitialStartingPosition;
 
@@ -151,11 +152,15 @@
     _gestureView = [[GDITouchProxyView alloc] initWithFrame:gestureViewFrame];
     _gestureView.delegate = self;
     [self.view addSubview:_gestureView];
-    
-    [self buildVisibleSlices];
+
     [self setInitialStartingPosition];
     [self initializeDialPoint];
-    [self rotateToNearestSliceWithAnimation:NO];
+    [self initializeNumberOfSlices];
+    
+    if (_numberOfSlices > 0) {
+        [self buildVisibleSlices];
+        [self rotateToNearestSliceWithAnimation:NO];
+    }
 }
 
 
@@ -185,12 +190,20 @@
     }
     [_visibleSlices removeAllObjects];
     
-    [self buildVisibleSlices];
-    [self rotateToNearestSliceWithAnimation:NO];
+    [self initializeNumberOfSlices];
+    
+    if (_numberOfSlices > 0) {
+        [self buildVisibleSlices];
+        [self rotateToNearestSliceWithAnimation:NO];
+    }
 }
 
 #pragma mark - Private Methods
 
+- (void)initializeNumberOfSlices
+{
+    _numberOfSlices = [_dataSource numberOfSlicesForDialViewController:self];
+}
 
 - (void)initializeDialPoint
 {
@@ -226,7 +239,6 @@
 
 - (void)buildVisibleSlices
 {
-    _numberOfSlices = [_dataSource numberOfSlicesForDial];
     _visibleSlices = [NSMutableArray array];
     _indexOfFirstSlice = 0;
     
@@ -237,13 +249,19 @@
     
     for (int i=0; i<_numberOfSlices; i++) {
         
-        GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:i];
+        GDIDialSlice *slice = [_dataSource dialViewController:self viewForDialSliceAtIndex:i];
         slice.rotation = currentRadians - [slice sizeInRadians] * .5;
         currentRadians -= [slice sizeInRadians];
         
         [_rotatingSlicesContainerView addSubview:slice];
         [_visibleSlices addObject:slice];
         
+        // repeat slices if we don't have enough to fill the dial
+        if (i+1 >= _numberOfSlices) {
+            i = -1;
+        }
+        
+        // stop creating slices once we've passed the max radians
         if (currentRadians <= -maxRadians) {
             _indexOfLastSlice = i;
             break;
@@ -262,7 +280,7 @@
         _indexOfFirstSlice = _numberOfSlices-1;
     }
     
-    GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:_indexOfFirstSlice];
+    GDIDialSlice *slice = [_dataSource dialViewController:self viewForDialSliceAtIndex:_indexOfFirstSlice];
     slice.rotation = currentRadians + [slice sizeInRadians] * .5;
     
     [_rotatingSlicesContainerView addSubview:slice];
@@ -293,7 +311,7 @@
         _indexOfLastSlice = 0;
     }
     
-    GDIDialSlice *slice = [_dataSource viewForDialSliceAtIndex:_indexOfLastSlice];
+    GDIDialSlice *slice = [_dataSource dialViewController:self viewForDialSliceAtIndex:_indexOfLastSlice];
     slice.rotation = currentRadians - [slice sizeInRadians] * .5;
     
     [_rotatingSlicesContainerView addSubview:slice];
@@ -336,6 +354,10 @@
 
 - (void)rotateDialByRadians:(CGFloat)radians
 {    
+    if (_numberOfSlices == 0) {
+        return;
+    }
+    
     _currentRotation += radians;
     _currentRotation = [self normalizeRotation:_currentRotation];
     
@@ -412,9 +434,8 @@
 
 // this method takes touch interaction points and rotates the dial container to match the movement
 - (void)trackTouchPoint:(CGPoint)point inView:(UIView*)view
-{    
+{       
     CGPoint normalizedPoint = [self normalizedPoint:point inView:view];
-    
     CGFloat angleBetweenInitalTouchAndCenter = atan2f(_lastPoint.y, _lastPoint.x);
     CGFloat angleBetweenCurrentTouchAndCenter = atan2f(normalizedPoint.y, normalizedPoint.x);
     CGFloat rotationAngle = angleBetweenCurrentTouchAndCenter - angleBetweenInitalTouchAndCenter;
@@ -508,18 +529,20 @@
     // normalize rotation so we don't get crazy large or small values
     _targetRotation = [self normalizeRotation:_targetRotation];
     
-    NSLog(@"rotating to nearest slice, closestDistance: %.3f, targetRotation: %.3f, currentRotation: %.3f", closestDistance, _targetRotation, _currentRotation );
-    
     // determine the current index of the selected slice
-    _currentIndex = _indexOfFirstSlice + sliceIndex;
+    NSUInteger newIndex = _indexOfFirstSlice + sliceIndex;
     
-    if (_currentIndex > _numberOfSlices-1) {
-        _currentIndex = fmodf(_currentIndex, _numberOfSlices);
+    if (newIndex > _numberOfSlices-1) {
+        newIndex = fmodf(newIndex, _numberOfSlices);
     }
     
-    // notify the delegate a slice has been selected
-    if([_delegate respondsToSelector:@selector(dialViewController:didSelectIndex:)]) {
-        [_delegate dialViewController:self didSelectIndex:_currentIndex];
+    if (newIndex != _currentIndex) {
+        _currentIndex = newIndex;
+        
+        // notify the delegate a slice has been selected
+        if([_delegate respondsToSelector:@selector(dialViewController:didSelectIndex:)]) {
+            [_delegate dialViewController:self didSelectIndex:_currentIndex];
+        }
     }
     
     if (animate) {

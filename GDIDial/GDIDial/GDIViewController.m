@@ -33,8 +33,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // Rare,Medium Rare,Medium,Medium Well,Well Done
     
-    _dataItems = [NSArray arrayWithObjects:@"One", @"Two", @"Three",@"Four", nil];
+//    _dataItems = [NSArray arrayWithObjects:@"Rare", @"Medium Rare", @"Medium",@"Medium Well", @"Well Done", nil];
+    
+//    "1\U00bd\" thick,2\" thick,1\" thick,1\U00bc\" thick"
+    // 1½" thick,2" thick,1" thick,1¼" thick
+    _dataItems = [NSArray arrayWithObjects:@"1½\" thick", @"2\" thick", @"1\" thick", @"1¼\" thick", nil];
     _dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil dataSource:self];
     _dialViewController.delegate = self;
     _dialViewController.dialRadius = kDialRadius;
@@ -99,14 +104,17 @@
 
 #pragma mark - GDIDialViewControllerDataSource Methods
 
-- (NSUInteger)numberOfSlicesForDial
+- (NSUInteger)numberOfSlicesForDialViewController:(GDIDialViewController *)dialVC
 {
-    return 100;
+    return _dataItems.count;
 }
 
-- (GDIDialSlice *)viewForDialSliceAtIndex:(NSUInteger)index
+- (GDIDialSlice *)dialViewController:(GDIDialViewController *)dialVC viewForDialSliceAtIndex:(NSUInteger)index
 {    
-    NSString *sliceLabel = [[NSString stringWithFormat:@"Dial Slice %i", index] uppercaseString];
+    NSLog(@"creating thicknesss slice for index: %i", index);
+    
+//    NSString *sliceLabel = [[NSString stringWithFormat:@"Dial Slice %i", index] uppercaseString];
+    NSString *sliceLabel = [[_dataItems objectAtIndex:index] uppercaseString];
     UIFont *font = [UIFont boldSystemFontOfSize:18.f];
     
     // here we calculate how big the slice will be with the given text. we use the convenience method on the GDICurvedLabel
