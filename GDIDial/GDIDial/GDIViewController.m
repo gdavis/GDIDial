@@ -7,7 +7,7 @@
 //
 
 #import "GDIViewController.h"
-#import "GDICurvedLabel.h"
+#import "GDIArcLabel.h"
 #import "GrillGuideDialSlice.h"
 #import "GDIMath.h"
 
@@ -46,7 +46,7 @@
     _dialViewController.dialPosition = GDIDialPositionBottom;
     _dialViewController.dialRegistrationViewRadius = 183.f;
     _dialViewController.view.frame = CGRectMake(self.dialContainerView.frame.size.width * .5 - kDialRadius, -kDialRadius*2 - 44.f + self.dialContainerView.frame.size.height, kDialRadius*2, kDialRadius*2);
-    [self.dialContainerView addSubview:_dialViewController.view];
+    [self.dialContainerView addSubview:_dialViewController.view];    
 }
 
 - (void)viewDidUnload
@@ -121,8 +121,9 @@
     // to get how many radians it takes to draw that text with that font at the given radius, 
     // create two points for the two corners of the triangle for the given arc the text will sit on, 
     // measure the distance between them, and use that as our slice width plus a little extra padding to give the slices some room.
-    CGPoint rightCornerPoint = cartesianCoordinateFromPolar(kDialRadius-12, 0);
-    CGPoint leftCornerPoint = cartesianCoordinateFromPolar(kDialRadius-12, [GDICurvedLabel sizeInRadiansOfText:sliceLabel font:font radius:kDialRadius-12]);
+    CGFloat textRadius = kDialRadius - 18;
+    CGPoint rightCornerPoint = cartesianCoordinateFromPolar(textRadius, 0);
+    CGPoint leftCornerPoint =  cartesianCoordinateFromPolar(textRadius, [GDIArcLabel sizeInRadiansOfText:sliceLabel font:font radius:textRadius kerning:2.f]);
     CGFloat dist = fabsf(distance(rightCornerPoint.x, rightCornerPoint.y, leftCornerPoint.x, leftCornerPoint.y));
     
     GrillGuideDialSlice *slice = [[GrillGuideDialSlice alloc] initWithRadius:kDialRadius width:dist+kDialSlicePadding*2];
@@ -131,7 +132,7 @@
 //    slice.backgroundLayer.strokeColor = [[UIColor redColor] CGColor];
 //    slice.backgroundLayer.fillColor = [[self randomColor] CGColor];
 
-    slice.label.radius = kDialRadius - 12;
+    slice.label.radius = textRadius;
     slice.label.text = sliceLabel;
     slice.label.font = font;
     

@@ -51,14 +51,15 @@
         self.contentView.backgroundColor = [UIColor redColor];
         
         // create label
-        _label = [[GDICurvedLabel alloc] initWithRadius:_radius origin:CGPointZero sizeInRadians:[self sizeInRadians]];
+        _label = [[GDIArcLabel alloc] initWithFrame:CGRectMake(-width*.5, 0, width, _radius)];
         _label.backgroundColor = [UIColor clearColor];
         _label.textColor = [UIColor whiteColor];
         _label.shadowColor = [UIColor blackColor];
         _label.shadowOffset = CGSizeMake(1, 1);
         _label.font = [UIFont boldSystemFontOfSize:18.f];
         _label.opaque = NO;
-        [self.contentView addSubview:_label];
+        _label.radius = _radius;
+        [self addSubview:_label];
     }
     return self;
 }
