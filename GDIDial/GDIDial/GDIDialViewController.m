@@ -184,6 +184,7 @@
     [self endNearestSliceRotation];
     
     _currentRotation = _initialRotation;
+    _currentIndex = -1;
     
     for (UIView *view in _visibleSlices) {
         [view removeFromSuperview];

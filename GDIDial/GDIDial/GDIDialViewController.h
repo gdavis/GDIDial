@@ -30,7 +30,7 @@ typedef enum {
 @property(nonatomic) CGFloat dialRegistrationViewRadius;
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDataSource> *dataSource;
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDelegate> *delegate;
-@property(nonatomic) NSUInteger currentIndex;
+@property(nonatomic) NSInteger currentIndex;
 @property(nonatomic) CGFloat friction;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource;
