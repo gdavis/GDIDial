@@ -40,13 +40,14 @@
 //    "1\U00bd\" thick,2\" thick,1\" thick,1\U00bc\" thick"
     // 1½" thick,2" thick,1" thick,1¼" thick
     _dataItems = [NSArray arrayWithObjects:@"1½\" thick", @"2\" thick", @"1\" thick", @"1¼\" thick", nil];
-    _dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil dataSource:self];
+    _dialViewController = [[GDIDialViewController alloc] initWithNibName:@"GDIDialView" bundle:nil];
     _dialViewController.delegate = self;
     _dialViewController.dialRadius = kDialRadius;
     _dialViewController.dialPosition = GDIDialPositionBottom;
     _dialViewController.dialRegistrationViewRadius = 183.f;
     _dialViewController.view.frame = CGRectMake(self.dialContainerView.frame.size.width * .5 - kDialRadius, -kDialRadius*2 - 44.f + self.dialContainerView.frame.size.height, kDialRadius*2, kDialRadius*2);
     [self.dialContainerView addSubview:_dialViewController.view];    
+    _dialViewController.dataSource = self;
 }
 
 - (void)viewDidUnload
@@ -110,9 +111,7 @@
 }
 
 - (GDIDialSlice *)dialViewController:(GDIDialViewController *)dialVC viewForDialSliceAtIndex:(NSUInteger)index
-{    
-    NSLog(@"creating thicknesss slice for index: %i", index);
-    
+{        
 //    NSString *sliceLabel = [[NSString stringWithFormat:@"Dial Slice %i", index] uppercaseString];
     NSString *sliceLabel = [[_dataItems objectAtIndex:index] uppercaseString];
     UIFont *font = [UIFont boldSystemFontOfSize:18.f];

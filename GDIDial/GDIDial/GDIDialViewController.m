@@ -107,8 +107,15 @@
 {
     self = [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
         _dataSource = dataSource;
+    }
+    return self;
+}
+
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
         _dialPosition = GDIDialPositionBottom;
         _dialRadius = 160.f;
         _dialRegistrationViewRadius = _dialRadius;
@@ -155,11 +162,13 @@
 
     [self setInitialStartingPosition];
     [self initializeDialPoint];
-    [self initializeNumberOfSlices];
     
-    if (_numberOfSlices > 0) {
-        [self buildVisibleSlices];
-        [self rotateToNearestSliceWithAnimation:NO];
+    if (_dataSource) {
+        [self initializeNumberOfSlices];
+        if (_numberOfSlices > 0) {
+            [self buildVisibleSlices];
+            [self rotateToNearestSliceWithAnimation:NO];
+        }
     }
 }
 
@@ -173,6 +182,22 @@
 
 #pragma mark - Class Methods
 
+- (void)setDataSource:(NSObject<GDIDialViewControllerDataSource> *)dataSource
+{
+    _dataSource = dataSource;
+    [self reloadData];
+}
+
+- (void)setDelegate:(NSObject<GDIDialViewControllerDelegate> *)delegate
+{
+    _delegate = delegate;
+    
+    // notify the delegate of the current index
+    if([_delegate respondsToSelector:@selector(dialViewController:didSelectIndex:)]) {
+        [_delegate dialViewController:self didSelectIndex:_currentIndex];
+    }
+}
+
 - (NSArray *)visibleSlices
 {
     return [NSArray arrayWithArray:_visibleSlices];
@@ -180,6 +205,10 @@
 
 - (void)reloadData
 {
+    if (_dataSource == nil) {
+        return;
+    }
+    
     [self endDeceleration];
     [self endNearestSliceRotation];
     
