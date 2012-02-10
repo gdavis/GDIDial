@@ -170,8 +170,9 @@ CTFontRef CTFontCreateFromUIFont(UIFont *font)
     if (self.text && self.font) {
         _attributedString = [GDIArcLabel attributedStringWithText:self.text font:self.font];
         _sizeOfTextInRadians = [GDIArcLabel sizeInRadiansOfText:self.text font:self.font radius:_radius kerning:self.kerning];
+        [self setNeedsDisplay];
     }
-    [self setNeedsDisplay];
+    
 }
 
 - (void)setFont:(UIFont *)font
@@ -180,23 +181,26 @@ CTFontRef CTFontCreateFromUIFont(UIFont *font)
     if (self.text && self.font) {
         _attributedString = [GDIArcLabel attributedStringWithText:self.text font:self.font];
         _sizeOfTextInRadians = [GDIArcLabel sizeInRadiansOfText:self.text font:self.font radius:_radius kerning:self.kerning];
+        [self setNeedsDisplay];
     }
-    [self setNeedsDisplay];
 }
 
 - (void)setRadius:(CGFloat)radius
 {
     _radius = radius;
-    _sizeOfTextInRadians = [GDIArcLabel sizeInRadiansOfText:self.text font:self.font radius:_radius kerning:self.kerning];
-    [self setNeedsDisplay];
-    
+    if (self.text && self.font) {
+        _sizeOfTextInRadians = [GDIArcLabel sizeInRadiansOfText:self.text font:self.font radius:_radius kerning:self.kerning];
+        [self setNeedsDisplay];
+    }
 }
 
 - (void)setKerning:(CGFloat)kerning
 {
     _kerning = kerning;
-    _sizeOfTextInRadians = [GDIArcLabel sizeInRadiansOfText:self.text font:self.font radius:_radius kerning:self.kerning];
-    [self setNeedsDisplay];
+    if (self.text && self.font) {
+        _sizeOfTextInRadians = [GDIArcLabel sizeInRadiansOfText:self.text font:self.font radius:_radius kerning:self.kerning];
+        [self setNeedsDisplay];
+    }
 }
 
 #pragma mark - Class Methods
