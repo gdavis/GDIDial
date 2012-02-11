@@ -193,7 +193,7 @@
     _delegate = delegate;
     
     // notify the delegate of the current index
-    if([_delegate respondsToSelector:@selector(dialViewController:didSelectIndex:)]) {
+    if([_delegate respondsToSelector:@selector(dialViewController:didSelectIndex:)] && _currentIndex >= 0) {
         [_delegate dialViewController:self didSelectIndex:_currentIndex];
     }
 }
