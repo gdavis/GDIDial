@@ -77,4 +77,30 @@
 }
 
 
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    BOOL isInsideSlice = NO;
+    
+    // extra offset to place our origin at the bottom of the slice
+    CGFloat radiansOffset = degreesToRadians(90);
+    
+    // convert point to polar coordinates
+    CGFloat angle = atan2f(point.y, point.x);
+    
+    // find radius of the point
+    // r = √ ( x2 + y2 )
+    CGFloat radius = sqrtf((point.x * point.x) + (point.y * point.y));
+    
+    // calulate the angles to constrain our point to.
+    CGFloat botRightAngle = (-_width*.5 / _radius) + radiansOffset;
+    CGFloat botLeftAngle = (_width*.5 / _radius) + radiansOffset;
+    
+    if (radius < _radius && radius > 0 && angle > botRightAngle && angle < botLeftAngle ) {
+        isInsideSlice = YES;
+    }
+    
+    return isInsideSlice;
+}
+
+
 @end

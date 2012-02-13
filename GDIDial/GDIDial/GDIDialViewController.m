@@ -55,6 +55,8 @@
 - (void)beginNearestSliceRotation;
 - (void)endNearestSliceRotation;
 
+- (void)selectDialSliceAtPoint:(CGPoint)point;
+
 - (void)rotateToNearestSliceWithAnimation:(BOOL)animate;
 - (void)rotateDialByRadians:(CGFloat)radians;
 
@@ -651,6 +653,54 @@
     return sliceIndex;
 }
 
+#pragma mark - Tap selection
+
+- (void)selectDialSliceAtPoint:(CGPoint)point
+{
+    GDIDialSlice *selectedSlice;
+    for (GDIDialSlice *slice in _visibleSlices) {
+        
+        CGPoint relativePoint = [slice convertPoint:point fromView:_gestureView];
+        if ([slice pointInside:relativePoint withEvent:nil]) {
+            selectedSlice = slice;
+            break;
+        }
+    }
+    
+    NSUInteger selectedSliceIndex = [_visibleSlices indexOfObject:selectedSlice];
+    
+    // if we don't find anything at that point, 
+    // we'll just rotate to the nearest slice
+    if (selectedSliceIndex == NSNotFound) {
+        [self rotateToNearestSliceWithAnimation:YES];
+        return;
+    }
+    
+    CGFloat dist = ( _dialRotation - _initialRotation - M_PI * .5) - selectedSlice.rotation;
+    _targetRotation = _currentRotation + dist;
+    
+    // normalize rotation so we don't get crazy large or small values
+    _targetRotation = [self normalizeRotation:_targetRotation];
+    
+    // determine the current index of the selected slice
+    NSUInteger newIndex = _indexOfFirstSlice + selectedSliceIndex;
+    
+    if (newIndex > _numberOfSlices-1) {
+        newIndex = fmodf(newIndex, _numberOfSlices);
+    }
+    
+    if (newIndex != _currentIndex) {
+        _currentIndex = newIndex;
+        
+        // notify the delegate a slice has been selected
+        if([_delegate respondsToSelector:@selector(dialViewController:didSelectIndex:)]) {
+            [_delegate dialViewController:self didSelectIndex:_currentIndex];
+        }
+    }
+    
+    [self beginNearestSliceRotation];
+}
+
 
 #pragma mark - Gesture View Delegate
 
@@ -674,7 +724,15 @@
 
 - (void)gestureView:(GDITouchProxyView *)gv touchEndedAtPoint:(CGPoint)point
 {
-    [self beginDeceleration];
+    NSLog(@"velocity: %.2f", _velocity);
+    if (fabsf(_velocity) == 0.f) {
+        // tap gesture
+        [self selectDialSliceAtPoint:point];
+    }
+    else {
+        // dragging gesture
+        [self beginDeceleration];
+    }
 }
 
 #pragma mark - Easing
