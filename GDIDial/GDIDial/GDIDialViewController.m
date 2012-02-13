@@ -724,7 +724,6 @@
 
 - (void)gestureView:(GDITouchProxyView *)gv touchEndedAtPoint:(CGPoint)point
 {
-    NSLog(@"velocity: %.2f", _velocity);
     if (fabsf(_velocity) == 0.f) {
         // tap gesture
         [self selectDialSliceAtPoint:point];
