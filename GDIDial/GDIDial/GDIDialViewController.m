@@ -12,6 +12,7 @@
 
 #define kDefaultFriction .95f
 #define kAnimationInterval 1.f/60.f
+#define kDefaultAnimateToPositionDuration 1.f
 
 @interface GDIDialViewController()
 
@@ -81,6 +82,7 @@
 @synthesize delegate = _delegate;
 @synthesize currentIndex = _currentIndex;
 @synthesize friction = _friction;
+@synthesize animateToPositionDuration = _animateToPositionDuration;
 
 @synthesize rotatingSlicesContainerView = _rotatingSlicesContainerView;
 @synthesize rotatingDialContainerView = _rotatingDialContainerView;
@@ -122,6 +124,7 @@
         _dialRadius = 160.f;
         _dialRegistrationViewRadius = _dialRadius;
         _friction = kDefaultFriction;
+        _animateToPositionDuration = kDefaultAnimateToPositionDuration;
     }
     return self;
 }
@@ -313,7 +316,7 @@
     }
     
     GDIDialSlice *slice = [_dataSource dialViewController:self viewForDialSliceAtIndex:_indexOfFirstSlice];
-    slice.rotation = currentRadians + [slice sizeInRadians] * .5;
+    slice.rotation = [self normalizeRotation:currentRadians + [slice sizeInRadians] * .5];
     
     [_rotatingSlicesContainerView addSubview:slice];
     [_visibleSlices insertObject:slice atIndex:0];
@@ -344,7 +347,7 @@
     }
     
     GDIDialSlice *slice = [_dataSource dialViewController:self viewForDialSliceAtIndex:_indexOfLastSlice];
-    slice.rotation = currentRadians - [slice sizeInRadians] * .5;
+    slice.rotation = [self normalizeRotation:currentRadians - [slice sizeInRadians] * .5];
     
     [_rotatingSlicesContainerView addSubview:slice];
     [_visibleSlices addObject:slice];
@@ -390,12 +393,14 @@
         return;
     }
     
+    radians = [self normalizeRotation:radians];
+    
     _currentRotation += radians;
     _currentRotation = [self normalizeRotation:_currentRotation];
     
     NSArray *slices = _rotatingSlicesContainerView.subviews;
     for (GDIDialSlice *slice in slices) {
-        slice.rotation += radians;
+        slice.rotation = [self normalizeRotation:slice.rotation + radians];
     }
     
     _rotatingDialContainerView.transform = CGAffineTransformMakeRotation(_currentRotation);    
@@ -427,29 +432,27 @@
 - (void)updateVisibleSlices
 {        
     CGFloat visibleDistance = -M_PI;    
-    
-    GDIDialSlice *firstSlice = [_visibleSlices objectAtIndex:0];
 
+    GDIDialSlice *firstSlice = [_visibleSlices objectAtIndex:0];
+    
     CGFloat firstSliceRotation = firstSlice.rotation;
     CGFloat firstSliceLeftSideRadians = firstSliceRotation + [firstSlice sizeInRadians]*.5;
     CGFloat firstSliceRightSideRadians = firstSliceRotation - [firstSlice sizeInRadians]*.5;
     
-    if ( firstSliceLeftSideRadians < 0 ) {
+    if ( firstSliceLeftSideRadians < 0 && firstSliceRightSideRadians < 0) {
         [self addFirstSlice];
         [self updateVisibleSlices];
     }
     
-    else if ( firstSliceRightSideRadians > 0 ) {
+    if ( firstSliceRightSideRadians > 0 && firstSliceLeftSideRadians > 0) {
         [self removeFirstSlice];
         [self updateVisibleSlices];
     }
     
-    
     GDIDialSlice *lastSlice = [_visibleSlices lastObject];
-    
     CGFloat lastSliceRotation = lastSlice.rotation;
     CGFloat lastSliceLeftSideRadians = lastSliceRotation + [lastSlice sizeInRadians]*.5;
-    CGFloat lastSliceRightSideRadians = lastSliceRotation - [lastSlice sizeInRadians]*.5;    
+    CGFloat lastSliceRightSideRadians = lastSliceRotation - [lastSlice sizeInRadians]*.5;
     
     if ( lastSliceLeftSideRadians > visibleDistance && lastSliceRightSideRadians > visibleDistance) {
         [self addEndSlice];
@@ -461,7 +464,6 @@
         [self updateVisibleSlices];
     }
 }
-
 
 
 // this method takes touch interaction points and rotates the dial container to match the movement
@@ -531,6 +533,7 @@
     _velocity *= _friction;
     
     if ( fabsf(_velocity) < .001f) {
+        _velocity = 0.f;
         [self endDeceleration];
         [self rotateToNearestSliceWithAnimation:YES];
     }
@@ -540,29 +543,15 @@
 }
 
 - (void)rotateToNearestSliceWithAnimation:(BOOL)animate
-{
-    CGFloat closestDistance = FLT_MAX;
-    NSUInteger sliceIndex = 0;
-    
-    for (int i=0; i<[_visibleSlices count]; i++) {
-        GDIDialSlice *slice = [_visibleSlices objectAtIndex:i];
-        
-        CGFloat dist = ( _dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
-        
-        if (fabsf(dist) < fabsf(closestDistance)) {
-            
-            closestDistance = dist;
-            sliceIndex = i;
-            
-            _targetRotation = _currentRotation + dist;
-        }
-    }
-
-    // normalize rotation so we don't get crazy large or small values
-    _targetRotation = [self normalizeRotation:_targetRotation];
+{    
+    NSUInteger nearestSliceIndex = [self indexForNearestSelectedSlice];
+    GDIDialSlice *slice = [_visibleSlices objectAtIndex:nearestSliceIndex];
+    CGFloat dist = (_dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
+     
+    _targetRotation = _currentRotation + dist;
     
     // determine the current index of the selected slice
-    NSUInteger newIndex = _indexOfFirstSlice + sliceIndex;
+    NSUInteger newIndex = _indexOfFirstSlice + nearestSliceIndex;
     
     if (newIndex > _numberOfSlices-1) {
         newIndex = fmodf(newIndex, _numberOfSlices);
@@ -587,22 +576,11 @@
 
 
 - (void)beginNearestSliceRotation
-{
-    // determine the shortest rotation direction. this fixes and issue when
-    // the rotation might be beyond +/- M_PI*2.
-    CGFloat delta1 = (_targetRotation - _currentRotation);
-    CGFloat delta2 = (_targetRotation - _currentRotation) + M_PI*2;
-    
-    if (fabsf(delta1) < fabsf(delta2)) {
-        _nearestSliceDelta = delta1;
-    }
-    else {
-        _nearestSliceDelta = delta2;
-    }
-    
+{     
+    _nearestSliceDelta = _targetRotation - _currentRotation;
     _nearestSliceStartValue = _currentRotation;
     _nearestSliceStartTime = [NSDate date];
-    _nearestSliceDuration = [[_nearestSliceStartTime dateByAddingTimeInterval:1.333f] timeIntervalSinceDate:_nearestSliceStartTime];
+    _nearestSliceDuration = [[_nearestSliceStartTime dateByAddingTimeInterval:_animateToPositionDuration] timeIntervalSinceDate:_nearestSliceStartTime];
     
     [_rotateToSliceTimer invalidate];
     _rotateToSliceTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
@@ -678,9 +656,6 @@
     
     CGFloat dist = ( _dialRotation - _initialRotation - M_PI * .5) - selectedSlice.rotation;
     _targetRotation = _currentRotation + dist;
-    
-    // normalize rotation so we don't get crazy large or small values
-    _targetRotation = [self normalizeRotation:_targetRotation];
     
     // determine the current index of the selected slice
     NSUInteger newIndex = _indexOfFirstSlice + selectedSliceIndex;

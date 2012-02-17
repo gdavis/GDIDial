@@ -32,6 +32,7 @@ typedef enum {
 @property(strong, nonatomic) NSObject<GDIDialViewControllerDelegate> *delegate;
 @property(nonatomic) NSInteger currentIndex;
 @property(nonatomic) CGFloat friction;
+@property(nonatomic) CGFloat animateToPositionDuration;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil dataSource:(NSObject<GDIDialViewControllerDataSource>*)dataSource;
 
