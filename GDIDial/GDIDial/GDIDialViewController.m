@@ -432,7 +432,7 @@
 - (void)updateVisibleSlices
 {        
     CGFloat visibleDistance = -M_PI;    
-
+    
     GDIDialSlice *firstSlice = [_visibleSlices objectAtIndex:0];
     
     CGFloat firstSliceRotation = firstSlice.rotation;
@@ -515,7 +515,8 @@
 - (void)beginDeceleration
 {
     [_decelerationTimer invalidate];
-    _decelerationTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
+    _decelerationTimer = [[NSTimer alloc] initWithFireDate:[NSDate date] interval:kAnimationInterval target:self selector:@selector(handleDecelerateTick) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_decelerationTimer forMode:NSRunLoopCommonModes];
 }
 
 
@@ -547,7 +548,7 @@
     NSUInteger nearestSliceIndex = [self indexForNearestSelectedSlice];
     GDIDialSlice *slice = [_visibleSlices objectAtIndex:nearestSliceIndex];
     CGFloat dist = (_dialRotation - _initialRotation - M_PI * .5) - slice.rotation;
-     
+    
     _targetRotation = _currentRotation + dist;
     
     // determine the current index of the selected slice
@@ -583,7 +584,8 @@
     _nearestSliceDuration = [[_nearestSliceStartTime dateByAddingTimeInterval:_animateToPositionDuration] timeIntervalSinceDate:_nearestSliceStartTime];
     
     [_rotateToSliceTimer invalidate];
-    _rotateToSliceTimer = [NSTimer scheduledTimerWithTimeInterval:kAnimationInterval target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
+    _rotateToSliceTimer = [[NSTimer alloc] initWithFireDate:[NSDate date] interval:kAnimationInterval target:self selector:@selector(handleRotateToSliceTimer) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_rotateToSliceTimer forMode:NSRunLoopCommonModes];
 }
 
 
