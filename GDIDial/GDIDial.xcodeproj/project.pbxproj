@@ -220,7 +220,7 @@
 		77B2D2FE14D6FA5700ABB176 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = 77B2D30114D6FA5700ABB176 /* Build configuration list for PBXProject "GDIDial" */;
 			compatibilityVersion = "Xcode 3.2";
