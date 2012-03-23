@@ -56,20 +56,20 @@ CTFontRef CTFontCreateFromUIFont(UIFont *font)
     CGContextScaleCTM(context, 1.f, -1.f);
     
     /*
-    // !DEBUG! reference point for origin
-    CGContextAddEllipseInRect(context, CGRectMake(-5, -5, 10, 10));
-    CGContextSetRGBFillColor(context, 1.f, 0.f, 1.f, 1.f);
-    CGContextFillPath(context);
-    
-    // draw the arc for reference
-    CGContextAddArc(context, 0, 0, _radius, 0, M_PI*2, 1);
-    CGContextSetRGBStrokeColor(context, 1.f, 0.f, 1.f, 1.f);
-    CGContextStrokePath(context);
-    
-    CGContextMoveToPoint(context, -_radius, 0);
-    CGContextAddLineToPoint(context, _radius, 0);
-    CGContextStrokePath(context);    
-    // !END DEBUG!
+     // !DEBUG! reference point for origin
+     CGContextAddEllipseInRect(context, CGRectMake(-5, -5, 10, 10));
+     CGContextSetRGBFillColor(context, 1.f, 0.f, 1.f, 1.f);
+     CGContextFillPath(context);
+     
+     // draw the arc for reference
+     CGContextAddArc(context, 0, 0, _radius, 0, M_PI*2, 1);
+     CGContextSetRGBStrokeColor(context, 1.f, 0.f, 1.f, 1.f);
+     CGContextStrokePath(context);
+     
+     CGContextMoveToPoint(context, -_radius, 0);
+     CGContextAddLineToPoint(context, _radius, 0);
+     CGContextStrokePath(context);    
+     // !END DEBUG!
      */
     
     // set text color
@@ -105,7 +105,7 @@ CTFontRef CTFontCreateFromUIFont(UIFont *font)
         // now loop through all the glyphs and draw each
         CFIndex glyphIndex = 0;
         for (; glyphIndex < glyphCount; glyphIndex++) {
-
+            
             // pull out the glyph
             CFRange glyphRange = CFRangeMake(glyphIndex, 1);    
             
@@ -126,7 +126,7 @@ CTFontRef CTFontCreateFromUIFont(UIFont *font)
             
             // find the x,y position to draw the text
             CGPoint position = [GDIArcLabel cartesianCoordinateFromPolarWithRadius:_radius radians:currentRotation + halfKerningInRadians];
-        
+            
             // find the rotation we need to place the baseline of the text on the inside of the arc
             CGFloat rotationAmountAtCenterOfGlyph = ((halfKerningInRadians + currentRotation + glyphSizeInRadians * .5) - M_PI) - M_PI * .5;
             CGAffineTransform textTransform = CGAffineTransformMakeRotation(rotationAmountAtCenterOfGlyph);
@@ -136,22 +136,22 @@ CTFontRef CTFontCreateFromUIFont(UIFont *font)
             CGContextShowGlyphsAtPoint(context, position.x, position.y, &glyph, 1);
             
             /* 
-            // !DEBUG!
-            CGContextMoveToPoint(context, 0, 0);
-            CGContextAddLineToPoint(context, position.x, position.y);
-            CGContextStrokePath(context);
-            
-            CGPoint centerPosition = [GDIArcLabel cartesianCoordinateFromPolarWithRadius:_radius radians:currentRotation + glyphSizeInRadians * .5];
-            CGContextMoveToPoint(context, 0, 0);
-            CGContextAddLineToPoint(context, centerPosition.x, centerPosition.y);
-            CGContextStrokePath(context);
-            
-            CGPoint endPosition = [GDIArcLabel cartesianCoordinateFromPolarWithRadius:_radius radians:currentRotation + glyphSizeInRadians];
-            CGContextMoveToPoint(context, 0, 0);
-            CGContextAddLineToPoint(context, endPosition.x, endPosition.y);
-            CGContextStrokePath(context);
-            // !END DEBUG!
-            */
+             // !DEBUG!
+             CGContextMoveToPoint(context, 0, 0);
+             CGContextAddLineToPoint(context, position.x, position.y);
+             CGContextStrokePath(context);
+             
+             CGPoint centerPosition = [GDIArcLabel cartesianCoordinateFromPolarWithRadius:_radius radians:currentRotation + glyphSizeInRadians * .5];
+             CGContextMoveToPoint(context, 0, 0);
+             CGContextAddLineToPoint(context, centerPosition.x, centerPosition.y);
+             CGContextStrokePath(context);
+             
+             CGPoint endPosition = [GDIArcLabel cartesianCoordinateFromPolarWithRadius:_radius radians:currentRotation + glyphSizeInRadians];
+             CGContextMoveToPoint(context, 0, 0);
+             CGContextAddLineToPoint(context, endPosition.x, endPosition.y);
+             CGContextStrokePath(context);
+             // !END DEBUG!
+             */
             
             currentRotation += glyphSizeInRadians + halfKerningInRadians;
         }
@@ -225,7 +225,8 @@ CTFontRef CTFontCreateFromUIFont(UIFont *font)
     CFRelease(ctFont);
     
     NSMutableAttributedString *nsString = (__bridge NSMutableAttributedString *) attrString;
-    return [nsString copy];
+    CFRelease(attrString);
+    return nsString;
 }
 
 
